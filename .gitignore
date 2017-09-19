@@ -126,3 +126,7 @@ buildNumber.properties
 !/.mvn/wrapper/maven-wrapper.jar
 
 # End of https://www.gitignore.io/api/java,maven,intellij
+
+# to ignore save files specific to machine running the application
+src/main/resources/saved_lists/
+
