@@ -33,12 +33,10 @@ public class TaskListController {
             HttpServletResponse response, Model model) {
         if (cookieValue.equals(NO_COOKIE_FOUND)) {
             String listIdentifier = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-            System.out.println("No cookie found, add identifier: " + listIdentifier);
             response.addCookie(new Cookie(COOKIE_IDENTIFIER, listIdentifier));
             taskList = new ToDoList(listIdentifier);
         }
         else {
-            System.out.println("Cookie found, retrieving  list for identifier: " + cookieValue);
             taskList = taskListService.getExistingTaskListFromFromFile(cookieValue);
         }
         model.addAttribute("toDoList", taskList);

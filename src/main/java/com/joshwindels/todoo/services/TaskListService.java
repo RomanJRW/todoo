@@ -54,7 +54,6 @@ public class TaskListService {
             oos.close();
             fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Error initializing stream");
         }
     }
