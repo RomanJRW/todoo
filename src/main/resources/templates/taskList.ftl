@@ -26,8 +26,6 @@
 <p>
     You have ${toDoList.getTasks()?size} tasks in your To Do list
 </p>
-<form>
-    <input type="submit" value="Download" method="get" action="ADD ACTION IN HERE FOR DOWNLOAD FILE">
-</form>
+<a href="/tasks/csv" download="my_tasks.csv">Download</a>
 </body>
 </html>
