@@ -14,7 +14,7 @@
     <input name="task"<br>
     <input type="submit" value="Add" formaction="/tasks/add" formmethod="post">
 </form>
-<#if toDoList.getTasks()?size gt 5><p style = "font-size:20px ; color: red">Bloody hell, you're busy!</p></#if>
+<#if toDoList.tasks?size gt 5><p style = "font-size:20px ; color: red">Bloody hell, you're busy!</p></#if>
 <ul>
     <#list toDoList.getTasks() as item>
         <form>
