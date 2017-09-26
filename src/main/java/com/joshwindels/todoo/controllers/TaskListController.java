@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.joshwindels.todoo.dos.ToDoList;
 import com.joshwindels.todoo.services.CsvConverterService;
 import com.joshwindels.todoo.services.TaskListService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -19,29 +21,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@Scope("request")
 @RequestMapping("/tasks")
 public class TaskListController {
 
     @Autowired
-    TaskListService taskListService;
+    private TaskListService taskListService;
     @Autowired
-    CsvConverterService csvConverterService;
-
-    private final String COOKIE_IDENTIFIER = "toDoCookie";
-
+    private CsvConverterService csvConverterService;
+    @Autowired
     private ToDoList taskList;
 
+    private static final String COOKIE_IDENTIFIER = "toDoCookie";
+
+    @GetMapping("/")
+    public String begin(@CookieValue(value = COOKIE_IDENTIFIER, required = false) String cookieValue,
+            HttpServletResponse response) {
+        BeanUtils.copyProperties(taskList, taskListService.getExistingTaskListFromFromFile(cookieValue));
+        if (taskList.getIdentifier() == null) {
+            String identifier = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+            response.addCookie(new Cookie(COOKIE_IDENTIFIER, identifier));
+            taskList.setIdentifier(identifier);
+        }
+        return "redirect:show";
+    }
+
     @GetMapping("/show")
-    public String getTasks(@CookieValue(value = COOKIE_IDENTIFIER, required = false) String cookieValue,
-            HttpServletResponse response, Model model) {
-        if (cookieValue == null) {
-            String listIdentifier = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-            response.addCookie(new Cookie(COOKIE_IDENTIFIER, listIdentifier));
-            taskList = new ToDoList(listIdentifier);
-        }
-        else {
-            taskList = taskListService.getExistingTaskListFromFromFile(cookieValue);
-        }
+    public String getTasks(Model model) {
         model.addAttribute("toDoList", taskList);
         return "taskList";
     }
@@ -61,7 +67,6 @@ public class TaskListController {
     @GetMapping("/csv")
     @ResponseBody
     public String download() {
-        String csvList = csvConverterService.convertTaskListToCsv(taskList);
-        return csvList;
+        return csvConverterService.convertTaskListToCsv(taskList);
     }
 }

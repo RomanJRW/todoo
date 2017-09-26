@@ -25,7 +25,7 @@ public class TaskListService {
     }
 
     public ToDoList getExistingTaskListFromFromFile(String fileName) {
-        ToDoList taskList = new ToDoList(fileName);
+        ToDoList taskList = new ToDoList();
         try {
             FileInputStream fis = new FileInputStream(new File("src/main/resources/saved_lists/" + fileName + ".txt"));
             ObjectInputStream ois = new ObjectInputStream(fis);
