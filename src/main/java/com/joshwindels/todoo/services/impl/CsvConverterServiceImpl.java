@@ -1,14 +1,13 @@
 package com.joshwindels.todoo.services.impl;
 
-import com.joshwindels.todoo.dos.ToDoList;
+import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.services.CsvConverterService;
-import org.apache.tomcat.util.buf.StringUtils;
 
 public class CsvConverterServiceImpl implements CsvConverterService {
 
-    public String convertTaskListToCsv(ToDoList toDoList) {
+    public String convertTaskListToCsv(TaskList taskList) {
 
-        return String.join("\n", toDoList.getTasks().toString());
+        return String.join("\n", taskList.getTasks().toString());
 
     }
 

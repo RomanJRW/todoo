@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.joshwindels.todoo.converters.TaskConverter;
 import com.joshwindels.todoo.dos.Task;
-import com.joshwindels.todoo.dos.ToDoList;
+import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.dtos.TaskDTO;
 import com.joshwindels.todoo.services.CsvConverterService;
 import com.joshwindels.todoo.services.TaskListService;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -34,7 +33,7 @@ public class TaskListController {
     @Autowired
     private CsvConverterService csvConverterService;
     @Autowired
-    private ToDoList taskList;
+    private TaskList taskList;
     @Autowired
     private TaskConverter taskConverter;
 

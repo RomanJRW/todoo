@@ -1,13 +1,13 @@
 package com.joshwindels.todoo.services;
 
 import com.joshwindels.todoo.dos.Task;
-import com.joshwindels.todoo.dos.ToDoList;
+import com.joshwindels.todoo.dos.TaskList;
 
 public interface TaskListService {
 
-    void addTaskToList(Task task, ToDoList taskList);
+    void addTaskToList(Task task, TaskList taskList);
 
-    void removeTaskFromList(Task task, ToDoList taskList);
+    void removeTaskFromList(Task task, TaskList taskList);
 
-    ToDoList getExistingTaskListFromFromFile(String fileName);
+    TaskList getExistingTaskListFromFromFile(String fileName);
 }

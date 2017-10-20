@@ -9,14 +9,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import com.joshwindels.todoo.dos.Task;
-import com.joshwindels.todoo.dos.ToDoList;
+import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.services.TaskListService;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class TaskListServiceImpl implements TaskListService {
 
-    public void addTaskToList(Task task, ToDoList taskList) {
+    public void addTaskToList(Task task, TaskList taskList) {
         taskList.addTask(task);
         saveTaskList(taskList);
         //
@@ -25,18 +25,18 @@ public class TaskListServiceImpl implements TaskListService {
         //        jdbcTemplate.execute("SELECT :jdbcTemplate FROM todo.\"public\".task");
     }
 
-    public void removeTaskFromList(Task task, ToDoList taskList) {
+    public void removeTaskFromList(Task task, TaskList taskList) {
         taskList.removeTask(task);
         saveTaskList(taskList);
     }
 
-    public ToDoList getExistingTaskListFromFromFile(String fileName) {
-        ToDoList taskList = new ToDoList();
+    public TaskList getExistingTaskListFromFromFile(String fileName) {
+        TaskList taskList = new TaskList();
         try {
             FileInputStream fis = new FileInputStream(new File("src/main/resources/saved_lists/" + fileName + ".txt"));
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            taskList = (ToDoList) ois.readObject();
+            taskList = (TaskList) ois.readObject();
 
             ois.close();
             fis.close();
@@ -50,7 +50,7 @@ public class TaskListServiceImpl implements TaskListService {
         return taskList;
     }
 
-    private void saveTaskList(ToDoList taskList) {
+    private void saveTaskList(TaskList taskList) {
         try {
             FileOutputStream fos = new FileOutputStream(new File("src/main/resources/saved_lists/" + taskList.getIdentifier() + ".txt"));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
