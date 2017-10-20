@@ -8,6 +8,7 @@ import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,11 +21,16 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     @Override
     public TaskList getTaskListById(int taskListId) {
         String sql = "SELECT * "
-                + "   FROM tasklist "
+                + "   FROM task_lists "
                 + "   WHERE id = :id ";
         Map<String, Integer> params = new HashMap<>();
         params.put("id", taskListId);
-        return npjt.queryForObject(sql, params, new TaskListRowMapper());
+        try {
+            return npjt.queryForObject(sql, params, new TaskListRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            // task list doesn't exist, will handle this better later
+            return new TaskList();
+        }
     }
 
     @Override
