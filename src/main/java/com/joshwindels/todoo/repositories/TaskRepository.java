@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.joshwindels.todoo.dos.Task;
 
-public interface TaskListRepository {
+public interface TaskRepository {
 
-    List<Task> getTaskListById(int taskListId);
+    List<Task> getTaskById(int taskListId);
 
 }
