@@ -32,28 +32,16 @@ public class TaskListController {
     @Autowired
     private TaskList taskList;
 
-    @GetMapping("/")
-    public String begin() {
-        return "redirect:show";
-    }
-
-    @GetMapping("/show")
-    public String getTasks(Model model) {
-        //TaskList taskList = taskListService.getTaskListById();
-        model.addAttribute("toDoList", taskList);
-        return "taskList";
-    }
-
     @PostMapping("/add")
     public String addTaskToTaskLists(int taskId, List<Integer> taskListIds) {
         taskListService.addTaskToTaskLists(taskId, taskListIds);
-        return "redirect:show";
+        return "redirect:todoo/lists";
     }
 
     @PostMapping("/remove")
     public String removeTaskFromList(@RequestParam int taskId, List<Integer> taskListIds) {
         taskListService.removeTaskFromTaskLists(taskId, taskListIds);
-        return "redirect:show";
+        return "redirect:todoo/lists";
     }
 
     @GetMapping("/csv")

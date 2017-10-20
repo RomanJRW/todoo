@@ -28,7 +28,7 @@ public class TaskController {
     @PostMapping("/delete")
     public String deleteTask(@RequestParam int taskId) {
         taskService.deleteTask(taskId);
-        return "redirect:tasklist/show";
+        return "redirect:todoo/lists";
     }
 
     @PostMapping("/add")
@@ -36,14 +36,14 @@ public class TaskController {
         Task task = taskConverter.convertToTask(taskDTO);
         taskService.saveTask(task);
         taskListService.addTaskToTaskLists(task.getId(), taskListIds);
-        return "redirect::tasklist/show";
+        return "redirect::todoo/lists";
     }
 
     @PostMapping("/update")
     public String updateTask(@RequestBody TaskDTO taskDTO) {
         Task task = taskConverter.convertToTask(taskDTO);
         taskService.saveTask(task);
-        return "redirect:tasklist/show";
+        return "redirect:todoo/lists";
     }
 
 }
