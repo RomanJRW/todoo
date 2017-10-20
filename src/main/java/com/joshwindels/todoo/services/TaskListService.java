@@ -2,15 +2,16 @@ package com.joshwindels.todoo.services;
 
 import java.util.Set;
 
-import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
 
 public interface TaskListService {
 
-    void addTaskToLists(Task task, Set<TaskList> taskLists);
+    void addTaskToTaskLists(int taskId, Set<Integer> taskListIds);
 
-    void removeTaskFromList(Task task, TaskList taskList);
+    void removeTaskFromTaskLists(int taskId, Set<Integer> taskListId);
 
-    void updateTask(Task task);
+    void saveTaskList(TaskList taskList);
+
+    TaskList getTaskListById(int taskListId);
 
 }

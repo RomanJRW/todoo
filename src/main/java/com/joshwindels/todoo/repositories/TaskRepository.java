@@ -6,6 +6,6 @@ public interface TaskRepository {
 
     Task getTaskById(int taskListId);
 
-    Task updateTask(Task task);
+    Task saveTask(Task task);
 
 }

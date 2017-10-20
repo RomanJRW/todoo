@@ -23,11 +23,15 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Task updateTask(Task task) {
-        String sql = " UPDATE tasks "
+    public Task saveTask(Task task) {
+        String sql = " INSERT INTO tasks "
+                + " (id, description, completed) "
+                + " VALUES ( :id :description, :completed ) "
+                + " ON CONFLICT id "
+                + " DO UPDATE tasks"
                 + " SET description = :description, "
                 + "     completed = :completed "
-                + " WHERE id = :id ";
+                + "     WHERE id = :id ";
         Map<String, Object> params = new HashMap<>();
         params.put("description", task.getDescription());
         params.put("completed", task.isCompleted());

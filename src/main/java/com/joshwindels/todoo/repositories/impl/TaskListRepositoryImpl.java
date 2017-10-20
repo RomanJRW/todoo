@@ -1,6 +1,7 @@
 package com.joshwindels.todoo.repositories.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
@@ -12,17 +13,17 @@ public class TaskListRepositoryImpl implements TaskListRepository {
         return null;
     }
 
-    @Override public TaskList updateTaskListName(int taskListId, String taskListName) {
+    @Override public TaskList updateTaskList(int taskListId, String taskListName) {
         return null;
     }
 
     @Override
-    public List<TaskList> addTaskToTaskLists(Task task, List<TaskList> taskLists) {
+    public List<TaskList> addTaskToTaskLists(Task task, Set<Integer> taskListIds) {
         return null;
     }
 
     @Override
-    public List<TaskList> removeTaskFromTaskLists(Task task, List<TaskList> taskLists) {
+    public List<TaskList> removeTaskFromTaskLists(Task task, Set<Integer> taskListIds) {
         return null;
     }
 }
