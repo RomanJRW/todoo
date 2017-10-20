@@ -8,6 +8,14 @@ import com.joshwindels.todoo.repositories.TaskListRepository;
 
 public class TaskListRepositoryImpl implements TaskListRepository {
 
+    @Override public TaskList getTaskListById(int taskListId) {
+        return null;
+    }
+
+    @Override public TaskList updateTaskListName(int taskListId, String taskListName) {
+        return null;
+    }
+
     @Override
     public List<TaskList> addTaskToTaskLists(Task task, List<TaskList> taskLists) {
         return null;

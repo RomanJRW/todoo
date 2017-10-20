@@ -1,21 +1,21 @@
 package com.joshwindels.todoo.services.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Set;
 
 import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
+import com.joshwindels.todoo.repositories.TaskListRepository;
+import com.joshwindels.todoo.repositories.TaskRepository;
 import com.joshwindels.todoo.services.TaskListService;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Repository
 public class TaskListServiceImpl implements TaskListService {
+
+    @Autowired
+    private TaskListRepository taskListRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Override
     public void addTaskToLists(Task task, Set<TaskList> taskLists) {
