@@ -11,7 +11,7 @@ public class TaskList implements Serializable {
 
     private int identifier;
     private String name;
-    private Set<Task> tasks;
+    private Set<Integer> tasks;
 
     public TaskList() {
         tasks = new HashSet<>();
@@ -25,19 +25,19 @@ public class TaskList implements Serializable {
         this.identifier = identifier;
     }
 
-    public Set<Task> getTasks(){
+    public Set<Integer> getTasks(){
         return tasks;
     }
 
-    public void setTasks(Set<Task> tasks) {
+    public void setTasks(Set<Integer> tasks) {
         this.tasks = tasks;
     }
 
-    public void addTask(Task task) {
-        tasks.add(task);
+    public void addTask(int taskId) {
+        tasks.add(taskId);
     }
 
-    public void removeTask(Task task) {
+    public void removeTask(int task) {
         tasks.remove(task);
     }
 
