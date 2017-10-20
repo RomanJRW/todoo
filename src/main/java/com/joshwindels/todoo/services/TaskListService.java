@@ -9,5 +9,7 @@ public interface TaskListService {
 
     void removeTaskFromList(Task task, TaskList taskList);
 
+    void updateTask(Task task);
+
     TaskList getExistingTaskListFromFromFile(String fileName);
 }

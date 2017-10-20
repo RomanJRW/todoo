@@ -53,6 +53,13 @@ public class TaskListController {
         return "redirect:show";
     }
 
+    @PostMapping("/update")
+    public String updateTask(@RequestBody TaskDTO taskDTO) {
+        Task task = taskConverter.convertToTask(taskDTO);
+        taskListService.updateTask(task);
+        return "redirect:show";
+    }
+
     @GetMapping("/csv")
     @ResponseBody
     public String downloadTaskList() {

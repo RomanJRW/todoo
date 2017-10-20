@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TaskListServiceImpl implements TaskListService {
 
+    @Override
     public void addTaskToList(Task task, TaskList taskList) {
         taskList.addTask(task);
         saveTaskList(taskList);
@@ -25,11 +26,13 @@ public class TaskListServiceImpl implements TaskListService {
         //        jdbcTemplate.execute("SELECT :jdbcTemplate FROM todo.\"public\".task");
     }
 
+    @Override
     public void removeTaskFromList(Task task, TaskList taskList) {
         taskList.removeTask(task);
         saveTaskList(taskList);
     }
 
+    @Override
     public TaskList getExistingTaskListFromFromFile(String fileName) {
         TaskList taskList = new TaskList();
         try {
@@ -48,6 +51,11 @@ public class TaskListServiceImpl implements TaskListService {
             System.out.println("Class not found");
         }
         return taskList;
+    }
+
+    @Override
+    public void updateTask(Task task) {
+
     }
 
     private void saveTaskList(TaskList taskList) {
