@@ -5,7 +5,10 @@ import java.util.Date;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.joshwindels.todoo.converters.TaskConverter;
+import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.ToDoList;
+import com.joshwindels.todoo.dtos.TaskDTO;
 import com.joshwindels.todoo.services.CsvConverterService;
 import com.joshwindels.todoo.services.TaskListService;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +35,8 @@ public class TaskListController {
     private CsvConverterService csvConverterService;
     @Autowired
     private ToDoList taskList;
+    @Autowired
+    private TaskConverter taskConverter;
 
     private static final String COOKIE_IDENTIFIER = "toDoCookie";
 
@@ -53,20 +59,22 @@ public class TaskListController {
     }
 
     @PostMapping("/add")
-    public String addTask(@RequestParam String task) {
+    public String addTask(@RequestBody TaskDTO taskDTO) {
+        Task task =taskConverter.convertToTask(taskDTO);
         taskListService.addTaskToList(task, taskList);
         return "redirect:show";
     }
 
     @PostMapping("/remove")
-    public String removeTask(@RequestParam String task) {
+    public String removeTask(@RequestBody TaskDTO taskDTO) {
+        Task task =taskConverter.convertToTask(taskDTO);
         taskListService.removeTaskFromList(task, taskList);
         return "redirect:show";
     }
 
     @GetMapping("/csv")
     @ResponseBody
-    public String download() {
+    public String downloadTaskList() {
         return csvConverterService.convertTaskListToCsv(taskList);
     }
 }
