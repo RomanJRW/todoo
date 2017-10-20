@@ -29,24 +29,23 @@ public class TaskListController {
     @Autowired
     private TaskConverter taskConverter;
     //temporary for compilation and testing
-    @Autowired
-    private TaskList taskList;
 
     @PostMapping("/add")
-    public String addTaskToTaskLists(int taskId, List<Integer> taskListIds) {
+    public String addTaskToTaskLists(@RequestParam int taskId, @RequestParam List<Integer> taskListIds) {
         taskListService.addTaskToTaskLists(taskId, taskListIds);
         return "redirect:todoo/lists";
     }
 
     @PostMapping("/remove")
-    public String removeTaskFromList(@RequestParam int taskId, List<Integer> taskListIds) {
+    public String removeTaskFromList(@RequestParam int taskId, @RequestParam List<Integer> taskListIds) {
         taskListService.removeTaskFromTaskLists(taskId, taskListIds);
         return "redirect:todoo/lists";
     }
 
     @GetMapping("/csv")
     @ResponseBody
-    public String downloadTaskList() {
+    public String downloadTaskList(@RequestParam int taskListId) {
+        TaskList taskList = taskListService.getTaskListById(taskListId);
         return csvConverterService.convertTaskListToCsv(taskList);
     }
 }

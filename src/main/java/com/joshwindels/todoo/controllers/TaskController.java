@@ -32,7 +32,7 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public String addTask(@RequestBody TaskDTO taskDTO, List<Integer> taskListIds) {
+    public String addTask(@RequestBody TaskDTO taskDTO, @RequestParam  List<Integer> taskListIds) {
         Task task = taskConverter.convertToTask(taskDTO);
         taskService.saveTask(task);
         taskListService.addTaskToTaskLists(task.getId(), taskListIds);
