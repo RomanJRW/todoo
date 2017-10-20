@@ -42,7 +42,7 @@ public class TaskListController {
     @PostMapping("/add")
     public String addTask(@RequestBody TaskDTO taskDTO) {
         Task task = taskConverter.convertToTask(taskDTO);
-        taskListService.addTaskToList(task, taskList);
+        taskListService.addTaskToLists(task, taskList);
         return "redirect:show";
     }
 

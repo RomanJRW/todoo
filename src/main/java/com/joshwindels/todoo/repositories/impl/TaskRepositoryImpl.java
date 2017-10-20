@@ -1,7 +1,6 @@
 package com.joshwindels.todoo.repositories.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.joshwindels.todoo.dos.Task;
@@ -16,20 +15,23 @@ public class TaskRepositoryImpl implements TaskRepository {
     NamedParameterJdbcTemplate npjt;
 
     @Override
-    public List<Task> getTaskById(int taskId) {
+    public Task getTaskById(int taskId) {
         String sql = "SELECT * FROM tasks WHERE id = :taskId";
         Map<String, Integer> params = new HashMap<>();
         params.put("taskId", taskId);
-        return npjt.query(sql, params, new TaskRowMapper());
+        return npjt.queryForObject(sql, params, new TaskRowMapper());
     }
 
     @Override
-    public Task addTask(Task task) {
-        String sql = " INSERT INTO tasks (description) "
-                + " VALUES (:description) "
-                + " RETURNING * ";
-        Map<String, String> params = new HashMap<>();
+    public Task updateTask(Task task) {
+        String sql = " UPDATE tasks "
+                + " SET description = :description, "
+                + "     completed = :completed "
+                + " WHERE id = :id ";
+        Map<String, Object> params = new HashMap<>();
         params.put("description", task.getDescription());
+        params.put("completed", task.isCompleted());
+        params.put("id", task.getId());
         return npjt.queryForObject(sql, params, new TaskRowMapper());
     }
 
