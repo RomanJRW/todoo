@@ -9,18 +9,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskList implements Serializable {
 
-    private String identifier;
+    private int identifier;
+    private String name;
     private Set<Task> tasks;
 
     public TaskList() {
         tasks = new HashSet<>();
     }
 
-    public String getIdentifier() {
+    public int getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(String identifier) {
+    public void setIdentifier(int identifier) {
         this.identifier = identifier;
     }
 
@@ -40,4 +41,11 @@ public class TaskList implements Serializable {
         tasks.remove(task);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
