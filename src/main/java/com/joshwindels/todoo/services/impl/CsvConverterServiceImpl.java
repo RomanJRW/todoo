@@ -8,7 +8,7 @@ public class CsvConverterServiceImpl implements CsvConverterService {
 
     public String convertTaskListToCsv(ToDoList toDoList) {
 
-        return StringUtils.join(toDoList.getTasks(), ',');
+        return String.join("\n", toDoList.getTasks().toString());
 
     }
 
