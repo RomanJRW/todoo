@@ -8,11 +8,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope(value="session")
 public class ToDoList implements Serializable {
 
     private String identifier;
-    private Set<String> tasks;
+    private Set<Task> tasks;
 
     public ToDoList() {
         tasks = new HashSet<>();
@@ -26,19 +25,19 @@ public class ToDoList implements Serializable {
         this.identifier = identifier;
     }
 
-    public Set<String> getTasks(){
+    public Set<Task> getTasks(){
         return tasks;
     }
 
-    public void setTasks(Set<String> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 
-    public void addTask(String task) {
+    public void addTask(Task task) {
         tasks.add(task);
     }
 
-    public void removeTask(String task) {
+    public void removeTask(Task task) {
         tasks.remove(task);
     }
 

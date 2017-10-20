@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.ToDoList;
 import com.joshwindels.todoo.services.TaskListService;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TaskListServiceImpl implements TaskListService {
 
-    public void addTaskToList(String task, ToDoList taskList) {
+    public void addTaskToList(Task task, ToDoList taskList) {
         taskList.addTask(task);
         saveTaskList(taskList);
         //
@@ -24,7 +25,7 @@ public class TaskListServiceImpl implements TaskListService {
         //        jdbcTemplate.execute("SELECT :jdbcTemplate FROM todo.\"public\".task");
     }
 
-    public void removeTaskFromList(String task, ToDoList taskList) {
+    public void removeTaskFromList(Task task, ToDoList taskList) {
         taskList.removeTask(task);
         saveTaskList(taskList);
     }
