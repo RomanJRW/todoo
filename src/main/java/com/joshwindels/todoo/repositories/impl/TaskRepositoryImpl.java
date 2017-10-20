@@ -23,4 +23,14 @@ public class TaskRepositoryImpl implements TaskRepository {
         return npjt.query(sql, params, new TaskRowMapper());
     }
 
+    @Override
+    public Task addTask(Task task) {
+        String sql = " INSERT INTO tasks (description) "
+                + " VALUES (:description) "
+                + " RETURNING * ";
+        Map<String, String> params = new HashMap<>();
+        params.put("description", task.getDescription());
+        return npjt.queryForObject(sql, params, new TaskRowMapper());
+    }
+
 }

@@ -8,4 +8,6 @@ public interface TaskRepository {
 
     List<Task> getTaskById(int taskListId);
 
+    Task addTask(Task task);
+
 }
