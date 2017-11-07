@@ -32,10 +32,10 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public String addTask(@RequestBody TaskDTO taskDTO, @RequestParam  List<Integer> taskListIds) {
+    public String addTask(@RequestBody TaskDTO taskDTO, @RequestParam  int taskListId) {
         Task task = taskConverter.convertToTask(taskDTO);
         taskService.saveTask(task);
-        taskListService.addTaskToTaskLists(task.getId(), taskListIds);
+        taskListService.addTaskToTaskList(task.getId(), taskListId);
         return "redirect::todoo/lists";
     }
 

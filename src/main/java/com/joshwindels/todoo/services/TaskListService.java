@@ -6,9 +6,9 @@ import com.joshwindels.todoo.dos.TaskList;
 
 public interface TaskListService {
 
-    void addTaskToTaskLists(int taskId, List<Integer> taskListIds);
+    void addTaskToTaskList(int taskId, int taskListId);
 
-    void removeTaskFromTaskLists(int taskId, List<Integer> taskListId);
+    void removeTaskFromTaskList(int taskId, int taskListId);
 
     void saveTaskList(TaskList taskList);
 

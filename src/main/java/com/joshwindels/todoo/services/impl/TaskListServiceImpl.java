@@ -1,7 +1,5 @@
 package com.joshwindels.todoo.services.impl;
 
-import java.util.List;
-
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.services.TaskListService;
@@ -15,13 +13,13 @@ public class TaskListServiceImpl implements TaskListService {
     private TaskListRepository taskListRepository;
 
     @Override
-    public void addTaskToTaskLists(int taskId, List<Integer> taskListIds) {
-        taskListRepository.addTaskToTaskLists(taskId, taskListIds);
+    public void addTaskToTaskList(int taskId, int taskListId) {
+        taskListRepository.addTaskToTaskList(taskId, taskListId);
     }
 
     @Override
-    public void removeTaskFromTaskLists(int taskId, List<Integer> taskListIds) {
-        taskListRepository.removeTaskFromTaskLists(taskId, taskListIds);
+    public void removeTaskFromTaskList(int taskId, int taskListId) {
+        taskListRepository.removeTaskFromTaskList(taskId, taskListId);
     }
 
     @Override

@@ -15,15 +15,10 @@ public class ToDooController {
     @Autowired
     TaskListService taskListService;
 
-    @GetMapping("/")
-    public String begin() {
-        return "redirect:lists";
-    }
-
     @GetMapping("/lists")
     public String getTaskLists(Model model) {
         // TO DO: Have some way to identify user. Temporarily hard coding for testing purposes
-        int taskListId = 2;
+        int taskListId = 1;
         TaskList taskList = taskListService.getTaskListById(taskListId);
         model.addAttribute("toDoList", taskList);
         return "taskList";

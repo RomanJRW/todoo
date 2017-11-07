@@ -41,4 +41,14 @@ public class TaskRepositoryImpl implements TaskRepository {
         return npjt.queryForObject(sql, params, new TaskRowMapper());
     }
 
+    @Override
+    public void deleteTask(int taskId) {
+        String sql = " DELETE * "
+                + "   FROM tasks "
+                + "   WHERE id = :taskId ";
+        Map<String, Integer> params = new HashMap<>();
+        params.put("taskId", taskId);
+        npjt.update(sql, params);
+    }
+
 }

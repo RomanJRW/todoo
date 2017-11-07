@@ -25,16 +25,11 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 + "   WHERE id = :id ";
         Map<String, Integer> params = new HashMap<>();
         params.put("id", taskListId);
-        try {
-            return npjt.queryForObject(sql, params, new TaskListRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            // task list doesn't exist, will handle this better later
-            return new TaskList();
-        }
+        return npjt.queryForObject(sql, params, new TaskListRowMapper());
     }
 
     @Override
-    public TaskList saveTaskList(TaskList taskList) {
+    public void saveTaskList(TaskList taskList) {
         String sql = " WITH upsert AS ("
                 + "    UPDATE task_lists"
                 + "        SET name = :name "
@@ -49,16 +44,29 @@ public class TaskListRepositoryImpl implements TaskListRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("id", taskList.getIdentifier());
         params.put("name", taskList.getName());
-        return npjt.queryForObject(sql, params, new TaskListRowMapper());
+        npjt.update(sql, params);
     }
 
     @Override
-    public List<TaskList> addTaskToTaskLists(int taskId, List<Integer> taskListIds) {
-        return null;
+    public void addTaskToTaskList(int taskId, int taskListId) {
+        String sql = " INSERT INTO task_list_task_mapping "
+                + " (task_list_id, task_id)  "
+                + " VALUES (:taskListId, :taskId) ";
+        Map<String, Object> params = new HashMap<>();
+        params.put("taskListId", taskListId);
+        params.put("taskId", taskId);
+        npjt.update(sql, params);
     }
 
     @Override
-    public List<TaskList> removeTaskFromTaskLists(int taskId, List<Integer> taskListIds) {
-        return null;
+    public void removeTaskFromTaskList(int taskId, int taskListId) {
+        String sql = " DELETE * "
+                + " FROM task_list_task_mapping "
+                + "WHERE task_id = :taskId , "
+                + "      task_list_id = :taskListId ";
+        Map<String, Object> params = new HashMap<>();
+        params.put("taskId", taskId);
+        params.put("taskListId", taskListId);
+        npjt.update(sql, params);
     }
 }
