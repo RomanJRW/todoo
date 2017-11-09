@@ -1,14 +1,12 @@
 package com.joshwindels.todoo.repositories.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,33 +15,35 @@ public class TaskListRepositoryImpl implements TaskListRepository {
 
     @Autowired
     NamedParameterJdbcTemplate npjt;
+    @Autowired
+    TaskListRowMapper taskListRowMapper;
 
     @Override
     public TaskList getTaskListById(int taskListId) {
         String sql = "SELECT * "
                 + "   FROM task_lists "
-                + "   WHERE id = :id ";
+                + "   WHERE id = :taskListId ";
         Map<String, Integer> params = new HashMap<>();
-        params.put("id", taskListId);
-        return npjt.queryForObject(sql, params, new TaskListRowMapper());
+        params.put("taskListId", taskListId);
+        return npjt.queryForObject(sql, params, taskListRowMapper);
     }
 
     @Override
     public void saveTaskList(TaskList taskList) {
         String sql = " WITH upsert AS ("
                 + "    UPDATE task_lists"
-                + "        SET name = :name "
-                + "        WHERE id = :id"
+                + "        SET name = :taskListName "
+                + "        WHERE id = :taskListId"
                 + "      RETURNING * )"
                 + "    INSERT INTO task_lists"
                 + "        (name)"
                 + "      VALUES "
-                + "        (:name)"
+                + "        (:taskListName)"
                 + "    WHERE NOT EXISTS"
                 + "      (SELECT * FROM upsert) ";
         Map<String, Object> params = new HashMap<>();
-        params.put("id", taskList.getIdentifier());
-        params.put("name", taskList.getName());
+        params.put("taskListId", taskList.getIdentifier());
+        params.put("taskListName", taskList.getName());
         npjt.update(sql, params);
     }
 
@@ -62,7 +62,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     public void removeTaskFromTaskList(int taskId, int taskListId) {
         String sql = " DELETE * "
                 + " FROM task_list_task_mapping "
-                + "WHERE task_id = :taskId , "
+                + " WHERE task_id = :taskId , "
                 + "      task_list_id = :taskListId ";
         Map<String, Object> params = new HashMap<>();
         params.put("taskId", taskId);

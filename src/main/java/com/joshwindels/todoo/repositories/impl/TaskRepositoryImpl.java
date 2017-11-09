@@ -15,13 +15,15 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Autowired
     NamedParameterJdbcTemplate npjt;
+    @Autowired
+    TaskRowMapper taskRowMapper;
 
     @Override
     public Task getTaskById(int taskId) {
         String sql = "SELECT * FROM tasks WHERE id = :taskId";
         Map<String, Integer> params = new HashMap<>();
         params.put("taskId", taskId);
-        return npjt.queryForObject(sql, params, new TaskRowMapper());
+        return npjt.queryForObject(sql, params, taskRowMapper);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         params.put("description", task.getDescription());
         params.put("completed", task.isCompleted());
         params.put("id", task.getId());
-        return npjt.queryForObject(sql, params, new TaskRowMapper());
+        return npjt.queryForObject(sql, params, taskRowMapper);
     }
 
     @Override
