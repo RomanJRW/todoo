@@ -1,5 +1,7 @@
 package com.joshwindels.todoo.services.impl;
 
+import java.util.List;
+
 import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.repositories.TaskRepository;
 import com.joshwindels.todoo.services.TaskService;
@@ -20,5 +22,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void saveTask(Task task) {
         taskRepository.saveTask(task);
+    }
+
+    @Override
+    public List<Task> getTasksForTaskListId(int taskListId) {
+        return taskRepository.getTasksByTaskListId(taskListId);
     }
 }

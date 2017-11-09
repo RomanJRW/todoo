@@ -1,21 +1,17 @@
-package com.joshwindels.todoo.dos;
+package com.joshwindels.todoo.dtos;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.springframework.stereotype.Component;
+import com.joshwindels.todoo.dos.Task;
 
-@Component
-public class TaskList implements Serializable {
+public class TaskListDTO {
 
     private int identifier;
     private String name;
     private List<Task> tasks;
 
-    public TaskList() {
+    public TaskListDTO() {
         tasks = new ArrayList<>();
     }
 
@@ -50,4 +46,5 @@ public class TaskList implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
 }

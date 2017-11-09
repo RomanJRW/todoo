@@ -1,7 +1,11 @@
 package com.joshwindels.todoo.controllers;
 
+import java.util.List;
+
+import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.services.TaskListService;
+import com.joshwindels.todoo.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +18,8 @@ public class ToDooController {
 
     @Autowired
     TaskListService taskListService;
+    @Autowired
+    TaskService taskService;
 
     @GetMapping("/lists")
     public String getTaskLists(Model model) {

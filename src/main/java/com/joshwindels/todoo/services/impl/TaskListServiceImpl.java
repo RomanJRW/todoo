@@ -2,6 +2,7 @@ package com.joshwindels.todoo.services.impl;
 
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
+import com.joshwindels.todoo.repositories.TaskRepository;
 import com.joshwindels.todoo.services.TaskListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Autowired
     private TaskListRepository taskListRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Override
     public void addTaskToTaskList(int taskId, int taskListId) {
@@ -29,7 +32,9 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Override
     public TaskList getTaskListById(int taskListId) {
-        return taskListRepository.getTaskListById(taskListId);
+        TaskList taskList = taskListRepository.getTaskListById(taskListId);
+        taskList.setTasks(taskRepository.getTasksByTaskListId(taskListId));
+        return taskList;
     }
 
 }

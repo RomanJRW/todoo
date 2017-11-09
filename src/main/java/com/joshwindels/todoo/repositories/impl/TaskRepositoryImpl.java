@@ -1,6 +1,7 @@
 package com.joshwindels.todoo.repositories.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.joshwindels.todoo.dos.Task;
@@ -24,6 +25,16 @@ public class TaskRepositoryImpl implements TaskRepository {
         Map<String, Integer> params = new HashMap<>();
         params.put("taskId", taskId);
         return npjt.queryForObject(sql, params, taskRowMapper);
+    }
+
+    @Override
+    public List<Task> getTasksByTaskListId(int taskListId) {
+        String sql = "SELECT * FROM tasks t, task_list_task_mapping tlm "
+                + "   WHERE t.id = tlm.task_id , "
+                + "     tlm.task_list_id = :taskListId , t.completed = false ";
+        Map<String, Object> params = new HashMap<>();
+        params.put("taskListId", taskListId);
+        return npjt.query(sql, params, taskRowMapper);
     }
 
     @Override
