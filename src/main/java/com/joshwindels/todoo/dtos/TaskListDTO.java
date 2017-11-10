@@ -7,7 +7,7 @@ import com.joshwindels.todoo.dos.Task;
 
 public class TaskListDTO {
 
-    private int identifier;
+    private int id;
     private String name;
     private List<Task> tasks;
 
@@ -15,12 +15,12 @@ public class TaskListDTO {
         tasks = new ArrayList<>();
     }
 
-    public int getIdentifier() {
-        return identifier;
+    public int getId() {
+        return id;
     }
 
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public List<Task> getTasks(){

@@ -24,7 +24,7 @@
     You have ${toDoList.getTasks()?size} tasks in your To Do list
 </p>
 
-<form action="/task/add" method="post">
+<form action="/task/add/${toDoList.getId()}" method="post">
     New Task:<br>
     <input type="text" name="description"/>
     <button type="submit">Submit</button>

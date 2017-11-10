@@ -6,6 +6,10 @@ public class TaskDTO {
     private String description;
     private boolean completed;
 
+    public TaskDTO(){
+
+    }
+
     public int getId() {
         return id;
     }

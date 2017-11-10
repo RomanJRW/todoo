@@ -9,6 +9,8 @@ import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +33,10 @@ public class TaskController {
         return "redirect:/todoo/lists";
     }
 
-    @PostMapping("/add")
-    public String addTask(@RequestBody TaskDTO taskDTO, @RequestParam  int taskListId) {
+    @PostMapping("/add/{taskListId}")
+    public String addTask(
+            @PathVariable(value = "taskListId") int taskListId,
+            TaskDTO taskDTO) {
         Task task = taskConverter.convertToTask(taskDTO);
         taskService.saveTask(task);
         taskListService.addTaskToTaskList(task.getId(), taskListId);
