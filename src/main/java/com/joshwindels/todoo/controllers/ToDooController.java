@@ -2,8 +2,10 @@ package com.joshwindels.todoo.controllers;
 
 import java.util.List;
 
+import com.joshwindels.todoo.converters.TaskListConverter;
 import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
+import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +22,16 @@ public class ToDooController {
     TaskListService taskListService;
     @Autowired
     TaskService taskService;
+    @Autowired
+    TaskListConverter taskListConverter;
 
     @GetMapping("/lists")
     public String getTaskLists(Model model) {
         // TO DO: Have some way to identify user. Temporarily hard coding for testing purposes
         int taskListId = 1;
-        TaskList taskList = taskListService.getTaskListById(taskListId);
-        model.addAttribute("toDoList", taskList);
+        TaskListDTO taskListDTO = taskListConverter.convertToTaskDTO(
+                taskListService.getTaskListById(taskListId));
+        model.addAttribute("toDoList", taskListDTO);
         return "taskList";
     }
 
