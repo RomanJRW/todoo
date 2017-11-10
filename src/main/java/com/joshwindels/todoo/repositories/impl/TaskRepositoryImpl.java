@@ -30,8 +30,8 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public List<Task> getTasksByTaskListId(int taskListId) {
         String sql = "SELECT * FROM tasks t, task_list_task_mapping tlm "
-                + "   WHERE t.id = tlm.task_id , "
-                + "     tlm.task_list_id = :taskListId , t.completed = false ";
+                + "   WHERE t.id = tlm.task_id AND "
+                + "     tlm.task_list_id = :taskListId AND t.completed = false ";
         Map<String, Object> params = new HashMap<>();
         params.put("taskListId", taskListId);
         return npjt.query(sql, params, taskRowMapper);
@@ -56,7 +56,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void deleteTask(int taskId) {
-        String sql = " DELETE * "
+        String sql = " DELETE "
                 + "   FROM tasks "
                 + "   WHERE id = :taskId ";
         Map<String, Integer> params = new HashMap<>();

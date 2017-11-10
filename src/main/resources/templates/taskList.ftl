@@ -14,8 +14,8 @@
 <ul>
 <#list toDoList.getTasks() as item>
     <form>
-        <li>${item}</li>
-        <button value=${item.identifier} formaction="/task/delete" name="task" formmethod="post">Done</button>
+        <li>${item.getDescription()}</li>
+        <button value=${item.getId()} formaction="/task/delete" name="taskId" formmethod="post">Done</button>
     </form>
 </#list>
 </ul>

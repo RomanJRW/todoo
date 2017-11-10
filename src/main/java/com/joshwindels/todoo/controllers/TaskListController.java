@@ -23,13 +23,13 @@ public class TaskListController {
     @PostMapping("/add")
     public String addTaskToTaskList(@RequestParam int taskId, @RequestParam int taskListId) {
         taskListService.addTaskToTaskList(taskId, taskListId);
-        return "redirect:todoo/lists";
+        return "redirect:/todoo/lists";
     }
 
     @PostMapping("/remove")
     public String removeTaskFromList(@RequestParam int taskId, @RequestParam int taskListId) {
         taskListService.removeTaskFromTaskList(taskId, taskListId);
-        return "redirect:todoo/lists";
+        return "redirect:/todoo/lists";
     }
 
     @GetMapping("/csv")

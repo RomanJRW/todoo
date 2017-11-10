@@ -62,7 +62,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     public void removeTaskFromTaskList(int taskId, int taskListId) {
         String sql = " DELETE * "
                 + " FROM task_list_task_mapping "
-                + " WHERE task_id = :taskId , "
+                + " WHERE task_id = :taskId AND "
                 + "      task_list_id = :taskListId ";
         Map<String, Object> params = new HashMap<>();
         params.put("taskId", taskId);
