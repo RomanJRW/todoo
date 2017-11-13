@@ -10,7 +10,7 @@ public interface TaskRepository {
 
     List<Task> getTasksByTaskListId(int taskListId);
 
-    Task saveTask(Task task);
+    Task saveNewTask(Task task);
 
     void deleteTask(int taskId);
 

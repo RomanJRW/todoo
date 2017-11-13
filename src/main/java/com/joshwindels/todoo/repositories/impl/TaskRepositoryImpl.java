@@ -38,19 +38,14 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Task saveTask(Task task) {
+    public Task saveNewTask(Task task) {
         String sql = " INSERT INTO tasks "
-                + " (id, description, completed) "
-                + " VALUES ( :id :description, :completed ) "
-                + " ON CONFLICT id "
-                + " DO UPDATE tasks"
-                + " SET description = :description, "
-                + "     completed = :completed "
-                + "     WHERE id = :id ";
+                + " (description, completed) "
+                + " VALUES ( :description, :completed ) "
+                + " RETURNING * ";
         Map<String, Object> params = new HashMap<>();
         params.put("description", task.getDescription());
         params.put("completed", task.isCompleted());
-        params.put("id", task.getId());
         return npjt.queryForObject(sql, params, taskRowMapper);
     }
 

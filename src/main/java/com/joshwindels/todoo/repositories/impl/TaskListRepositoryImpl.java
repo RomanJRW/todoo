@@ -30,17 +30,14 @@ public class TaskListRepositoryImpl implements TaskListRepository {
 
     @Override
     public void saveTaskList(TaskList taskList) {
-        String sql = " WITH upsert AS ("
-                + "    UPDATE task_lists"
-                + "        SET name = :taskListName "
-                + "        WHERE id = :taskListId"
-                + "      RETURNING * )"
-                + "    INSERT INTO task_lists"
-                + "        (name)"
-                + "      VALUES "
-                + "        (:taskListName)"
-                + "    WHERE NOT EXISTS"
-                + "      (SELECT * FROM upsert) ";
+        String sql = " INSERT INTO task_lists "
+                + " (id, name) "
+                + " VALUES ( :taskListId, :taskListName ) "
+                + " ON CONFLICT (id) "
+                + " DO UPDATE "
+                + " SET name = :taskListName, "
+                + "     WHERE task_lists.id = :taskListId "
+                + " RETURNING * ";
         Map<String, Object> params = new HashMap<>();
         params.put("taskListId", taskList.getIdentifier());
         params.put("taskListName", taskList.getName());
@@ -51,7 +48,8 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     public void addTaskToTaskList(int taskId, int taskListId) {
         String sql = " INSERT INTO task_list_task_mapping "
                 + " (task_list_id, task_id)  "
-                + " VALUES (:taskListId, :taskId) ";
+                + " VALUES (:taskListId, :taskId) "
+                + " ON CONFLICT DO NOTHING ";
         Map<String, Object> params = new HashMap<>();
         params.put("taskListId", taskListId);
         params.put("taskId", taskId);

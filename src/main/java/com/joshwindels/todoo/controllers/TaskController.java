@@ -1,7 +1,5 @@
 package com.joshwindels.todoo.controllers;
 
-import java.util.List;
-
 import com.joshwindels.todoo.converters.TaskConverter;
 import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dtos.TaskDTO;
@@ -9,7 +7,6 @@ import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,9 +35,9 @@ public class TaskController {
             @PathVariable(value = "taskListId") int taskListId,
             TaskDTO taskDTO) {
         Task task = taskConverter.convertToTask(taskDTO);
-        taskService.saveTask(task);
+        task = taskService.saveTask(task);
         taskListService.addTaskToTaskList(task.getId(), taskListId);
-        return "redirect::/todoo/lists";
+        return "redirect:/todoo/lists";
     }
 
     @PostMapping("/update")
