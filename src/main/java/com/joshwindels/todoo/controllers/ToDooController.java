@@ -1,10 +1,6 @@
 package com.joshwindels.todoo.controllers;
 
-import java.util.List;
-
 import com.joshwindels.todoo.converters.TaskListConverter;
-import com.joshwindels.todoo.dos.Task;
-import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.TaskService;

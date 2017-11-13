@@ -30,6 +30,6 @@
     <button type="submit">Submit</button>
 </form>
 
-<a href="/tasklist/csv" download="my_tasks.csv">Download</a>
+<a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
 </body>
 </html>

@@ -1,7 +1,5 @@
 package com.joshwindels.todoo.services;
 
-import java.util.List;
-
 import com.joshwindels.todoo.dos.TaskList;
 
 public interface TaskListService {
