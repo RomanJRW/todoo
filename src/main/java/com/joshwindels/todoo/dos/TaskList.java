@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskList implements Serializable {
 
-    private int identifier;
+    private int id;
     private String name;
     private List<Task> tasks;
 
@@ -17,12 +17,12 @@ public class TaskList implements Serializable {
         tasks = new ArrayList<>();
     }
 
-    public int getIdentifier() {
-        return identifier;
+    public int getId() {
+        return id;
     }
 
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
+    public void setId(int identifier) {
+        this.id = identifier;
     }
 
     public List<Task> getTasks(){

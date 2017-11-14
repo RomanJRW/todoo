@@ -6,7 +6,7 @@ public interface TaskListRepository {
 
     TaskList getTaskListById(int taskListId);
 
-    void saveTaskList(TaskList taskList);
+    TaskList saveNewTaskList(TaskList taskList);
 
     void addTaskToTaskList(int taskId, int taskListId);
 

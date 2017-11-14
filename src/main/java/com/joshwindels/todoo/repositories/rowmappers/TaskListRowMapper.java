@@ -14,7 +14,7 @@ public class TaskListRowMapper implements RowMapper<TaskList> {
     public TaskList mapRow(ResultSet rs, int rowNumber) throws SQLException {
         TaskList taskList = new TaskList();
         taskList.setName(rs.getString("name"));
-        taskList.setIdentifier(rs.getInt("id"));
+        taskList.setId(rs.getInt("id"));
         return taskList;
     }
 

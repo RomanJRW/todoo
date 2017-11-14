@@ -26,8 +26,8 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
-    public void saveTaskList(TaskList taskList) {
-        taskListRepository.saveTaskList(taskList);
+    public TaskList saveNewTaskList(TaskList taskList) {
+        return taskListRepository.saveNewTaskList(taskList);
     }
 
     @Override

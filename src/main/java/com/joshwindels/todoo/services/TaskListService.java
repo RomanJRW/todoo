@@ -8,7 +8,7 @@ public interface TaskListService {
 
     void removeTaskFromTaskList(int taskId, int taskListId);
 
-    void saveTaskList(TaskList taskList);
+    TaskList saveNewTaskList(TaskList taskList);
 
     TaskList getTaskListById(int taskListId);
 

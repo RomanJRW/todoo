@@ -7,6 +7,7 @@ import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,23 +26,22 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 + "   WHERE id = :taskListId ";
         Map<String, Integer> params = new HashMap<>();
         params.put("taskListId", taskListId);
-        return npjt.queryForObject(sql, params, taskListRowMapper);
+        try {
+            return npjt.queryForObject(sql, params, taskListRowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            return new TaskList();
+        }
     }
 
     @Override
-    public void saveTaskList(TaskList taskList) {
+    public TaskList saveNewTaskList(TaskList taskList) {
         String sql = " INSERT INTO task_lists "
-                + " (id, name) "
-                + " VALUES ( :taskListId, :taskListName ) "
-                + " ON CONFLICT (id) "
-                + " DO UPDATE "
-                + " SET name = :taskListName, "
-                + "     WHERE task_lists.id = :taskListId "
+                + " (name) "
+                + " VALUES ( :taskListName )"
                 + " RETURNING * ";
         Map<String, Object> params = new HashMap<>();
-        params.put("taskListId", taskList.getIdentifier());
         params.put("taskListName", taskList.getName());
-        npjt.update(sql, params);
+        return npjt.queryForObject(sql, params, taskListRowMapper);
     }
 
     @Override
