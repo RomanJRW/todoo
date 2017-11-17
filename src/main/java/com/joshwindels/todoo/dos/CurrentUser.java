@@ -1,4 +1,4 @@
-package com.joshwindels.todoo;
+package com.joshwindels.todoo.dos;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;

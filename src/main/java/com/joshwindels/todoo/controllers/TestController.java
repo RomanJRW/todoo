@@ -1,6 +1,6 @@
 package com.joshwindels.todoo.controllers;
 
-import com.joshwindels.todoo.CurrentUser;
+import com.joshwindels.todoo.dos.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

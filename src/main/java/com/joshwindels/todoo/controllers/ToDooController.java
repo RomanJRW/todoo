@@ -1,6 +1,6 @@
 package com.joshwindels.todoo.controllers;
 
-import com.joshwindels.todoo.CurrentUser;
+import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.converters.TaskListConverter;
 import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.TaskListService;
