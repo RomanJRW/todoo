@@ -1,8 +1,10 @@
 package com.joshwindels.todoo.repositories.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;
@@ -18,6 +20,16 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     NamedParameterJdbcTemplate npjt;
     @Autowired
     TaskListRowMapper taskListRowMapper;
+
+    @Override
+    public List<Integer> getTaskListIdsForUser(int userId) {
+        String sql = "SELECT task_list_id "
+                + "   FROM user_task_list_map "
+                + "   WHERE user_id = :userId ";
+        Map<String, Integer> params = new HashMap<>();
+        params.put("user_id", userId);
+        return npjt.queryForList(sql, params, Integer.class);
+    }
 
     @Override
     public TaskList getTaskListById(int taskListId) {
@@ -46,7 +58,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
 
     @Override
     public void addTaskToTaskList(int taskId, int taskListId) {
-        String sql = " INSERT INTO task_list_task_mapping "
+        String sql = " INSERT INTO task_list_task_map "
                 + " (task_list_id, task_id)  "
                 + " VALUES (:taskListId, :taskId) "
                 + " ON CONFLICT DO NOTHING ";
@@ -59,7 +71,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     @Override
     public void removeTaskFromTaskList(int taskId, int taskListId) {
         String sql = " DELETE * "
-                + " FROM task_list_task_mapping "
+                + " FROM task_list_task_map "
                 + " WHERE task_id = :taskId AND "
                 + "      task_list_id = :taskListId ";
         Map<String, Object> params = new HashMap<>();
@@ -67,4 +79,16 @@ public class TaskListRepositoryImpl implements TaskListRepository {
         params.put("taskListId", taskListId);
         npjt.update(sql, params);
     }
+
+    @Override
+    public void addTaskListAndUserMapping(int userId, int taskListId) {
+        String sql = " INSERT INTO user_task_list_map "
+                + " (user_id, task_list_id) "
+                + " VALUES (:userId, :taskListId) ";
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("taskListId", taskListId);
+        npjt.update(sql, params);
+    }
+
 }

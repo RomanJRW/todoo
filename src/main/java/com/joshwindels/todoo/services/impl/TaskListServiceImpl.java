@@ -1,5 +1,8 @@
 package com.joshwindels.todoo.services.impl;
 
+import java.util.List;
+
+import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.TaskRepository;
@@ -10,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskListServiceImpl implements TaskListService {
 
+    @Autowired
+    private CurrentUser currentUser;
     @Autowired
     private TaskListRepository taskListRepository;
     @Autowired
@@ -27,7 +32,9 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Override
     public TaskList saveNewTaskList(TaskList taskList) {
-        return taskListRepository.saveNewTaskList(taskList);
+        TaskList savedTaskList = taskListRepository.saveNewTaskList(taskList);
+        taskListRepository.addTaskListAndUserMapping(currentUser.getId(), savedTaskList.getId());
+        return savedTaskList;
     }
 
     @Override
@@ -35,6 +42,12 @@ public class TaskListServiceImpl implements TaskListService {
         TaskList taskList = taskListRepository.getTaskListById(taskListId);
         taskList.setTasks(taskRepository.getTasksByTaskListId(taskListId));
         return taskList;
+    }
+
+    @Override
+    public List<Integer> getTaskListIdsForUser(int userId) {
+
+        return null;
     }
 
 }

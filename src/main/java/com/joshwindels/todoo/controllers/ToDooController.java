@@ -26,9 +26,9 @@ public class ToDooController {
 
     @GetMapping("/lists")
     public String getTaskLists(Model model) {
-        currentUser.getId();
+        //Note the getting of the first task list at the end. Hardcoded temporarily
         TaskListDTO taskListDTO = taskListConverter.convertToTaskDTO(
-                taskListService.getTaskListById(currentUser.getId()));
+                taskListService.getTaskListById(currentUser.getTaskListIds().get(0)));
         model.addAttribute("toDoList", taskListDTO);
         return "taskList";
     }

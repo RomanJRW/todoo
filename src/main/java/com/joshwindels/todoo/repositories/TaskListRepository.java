@@ -1,5 +1,7 @@
 package com.joshwindels.todoo.repositories;
 
+import java.util.List;
+
 import com.joshwindels.todoo.dos.TaskList;
 
 public interface TaskListRepository {
@@ -11,5 +13,9 @@ public interface TaskListRepository {
     void addTaskToTaskList(int taskId, int taskListId);
 
     void removeTaskFromTaskList(int taskId, int taskListId);
+
+    List<Integer> getTaskListIdsForUser(int userId);
+
+    void addTaskListAndUserMapping(int userId, int taskListId);
 
 }

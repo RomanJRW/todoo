@@ -29,7 +29,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public List<Task> getTasksByTaskListId(int taskListId) {
-        String sql = "SELECT * FROM tasks t, task_list_task_mapping tlm "
+        String sql = "SELECT * FROM tasks t, task_list_task_map tlm "
                 + "   WHERE t.id = tlm.task_id AND "
                 + "     tlm.task_list_id = :taskListId AND t.completed = false ";
         Map<String, Object> params = new HashMap<>();

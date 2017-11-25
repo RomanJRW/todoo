@@ -1,7 +1,5 @@
 package com.joshwindels.todoo.controllers;
 
-import javax.servlet.http.HttpSession;
-
 import com.joshwindels.todoo.converters.TaskListConverter;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.dtos.TaskListDTO;
@@ -27,10 +25,9 @@ public class TaskListController {
     private TaskListConverter taskListConverter;
 
     @PostMapping("/add")
-    public String addNewTaskList(HttpSession session, TaskListDTO taskListDTO) {
+    public String addNewTaskList(TaskListDTO taskListDTO) {
         TaskList taskList = taskListConverter.convertToTaskList(taskListDTO);
-        taskList = taskListService.saveNewTaskList(taskList);
-        session.setAttribute(ToDooController.COOKIE_VAL, taskList.getId());
+        taskListService.saveNewTaskList(taskList);
         return "redirect:/todoo/lists";
     }
 
