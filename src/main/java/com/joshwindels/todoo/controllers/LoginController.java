@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -23,15 +24,20 @@ public class LoginController {
     TaskListService taskListService;
 
     @GetMapping("/login")
+    public String logInUser() {
+        return "login";
+    }
+
+    @PostMapping("/login/submit")
     public String logInUser(Model model, String username, String password) {
         Integer userId = userValidationService.getUserIdForLoginDetails(username, password);
         if (userId != null) {
             currentUser.setId(userId);
             List<Integer> taskListIds = taskListService.getTaskListIdsForUser(userId);
             currentUser.setTaskListIds(taskListIds);
-            return "redirect:/todoo/taskList";
+            return "redirect:/todoo/lists";
         } else {
-            model.addAttribute("failed");
+            model.addAttribute("failedLogin", "incorrectPw");
             return "login";
         }
     }

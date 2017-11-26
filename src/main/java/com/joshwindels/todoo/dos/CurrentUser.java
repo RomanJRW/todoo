@@ -2,11 +2,12 @@ package com.joshwindels.todoo.dos;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
 
 @Component
-@SessionScope
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CurrentUser {
 
     private Integer id;

@@ -11,26 +11,26 @@
     Your Task Lists
 </h1>
 
-<#if toDoList.getName()??>
+<#list toDoLists as toDoList>
+
+    <#if toDoList.getName()??>
     <h2>
-        ${toDoList.getName()}
+    ${toDoList.getName()}
     </h2>
-<#else>
+    <#else>
     <h2>
         My First Task List
     </h2>
-</#if>
-
-<#if toDoList.getName()?has_content>
+    </#if>
 
     <#if toDoList.tasks?size gt 5><p style = "font-size:20px ; color: red">Bloody hell, you're busy!</p></#if>
     <ul>
-    <#list toDoList.getTasks() as item>
-        <form>
-            <li>${item.getDescription()}</li>
-            <button value=${item.getId()} formaction="/task/delete" name="taskId" formmethod="post">Done</button>
-        </form>
-    </#list>
+        <#list toDoList.getTasks() as item>
+            <form>
+                <li>${item.getDescription()}</li>
+                <button value=${item.getId()} formaction="/task/delete" name="taskId" formmethod="post">Done</button>
+            </form>
+        </#list>
     </ul>
 
     <p>
@@ -41,17 +41,17 @@
         <input type="text" name="description"/>
         <button type="submit">Submit</button>
     </form>
-<#else>
+    <#else>
     <form action="/tasklist/add" method="post">
         New Task List Name:<br>
         <input type="text" name="name"/>
         <button type="submit">Submit</button>
     </form>
-</#if>
-
-
+    </#if>
 
     <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
+
+</#list>
 
 </body>
 </html>
