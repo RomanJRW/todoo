@@ -41,15 +41,15 @@
         <input type="text" name="description"/>
         <button type="submit">Submit</button>
     </form>
+
+    <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
+
     <#else>
     <form action="/tasklist/add" method="post">
         New Task List Name:<br>
         <input type="text" name="name"/>
         <button type="submit">Submit</button>
     </form>
-    </#if>
-
-    <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
 
 </#list>
 

@@ -27,7 +27,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 + "   FROM user_task_list_map "
                 + "   WHERE user_id = :userId ";
         Map<String, Integer> params = new HashMap<>();
-        params.put("user_id", userId);
+        params.put("userId", userId);
         return npjt.queryForList(sql, params, Integer.class);
     }
 

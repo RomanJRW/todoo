@@ -25,7 +25,11 @@ public class LoginController {
 
     @GetMapping("/login")
     public String logInUser() {
-        return "login";
+        if (currentUser.getId() == null) {
+            return "login";
+        } else {
+            return "redirect:/todoo/lists";
+        }
     }
 
     @PostMapping("/login/submit")

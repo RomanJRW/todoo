@@ -32,7 +32,7 @@ public class ToDooController {
     public String getTaskLists(Model model) {
         List<TaskListDTO> taskLists = new ArrayList<>();
         for (Integer taskListId : currentUser.getTaskListIds()) {
-            model.addAttribute(taskListConverter.convertToTaskDTO(
+            taskLists.add(taskListConverter.convertToTaskDTO(
                     taskListService.getTaskListById(taskListId)));
         }
         model.addAttribute("toDoLists", taskLists);
