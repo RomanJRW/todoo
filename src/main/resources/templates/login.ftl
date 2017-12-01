@@ -11,7 +11,7 @@
     Welcome to Todoo
 </h1>
 
-<#if failedLogin??><p style = "font-size:10px ; color: red">Login attempt failed, please try again</p></#if>
+<#if failedLogin??><p style = "font-size:25px ; color: red">Login attempt failed, please try again</p></#if>
 
 <form action="/todoo/login/submit" method="post">
     Username</b>

@@ -24,7 +24,7 @@ public class LoginController {
     TaskListService taskListService;
 
     @GetMapping("/login")
-    public String logInUser() {
+    public String logInUser(Model model) {
         if (currentUser.getId() == null) {
             return "login";
         } else {
@@ -42,7 +42,7 @@ public class LoginController {
             return "redirect:/todoo/lists";
         } else {
             model.addAttribute("failedLogin", "incorrectPw");
-            return "login";
+            return logInUser(model);
         }
     }
 
