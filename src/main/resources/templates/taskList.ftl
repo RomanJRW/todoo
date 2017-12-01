@@ -42,6 +42,11 @@
         <button type="submit">Submit</button>
     </form>
 
+    <form action="/tasklist/delete/${toDoList.getId()}">Delete</form>
+    <form>
+        <button formaction="/tasklist/delete/${toDoList.getId()}" name="taskListId" formmethod="post">Delete Task List</button>
+    </form>
+
     <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
 
     <#else>

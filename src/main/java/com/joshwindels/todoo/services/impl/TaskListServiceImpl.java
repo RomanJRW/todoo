@@ -33,6 +33,7 @@ public class TaskListServiceImpl implements TaskListService {
     @Override
     public void deleteTaskList(int taskListId) {
         taskListRepository.deleteTaskList(taskListId);
+        // TODO need to add extra call to delete user/tasklist mapping
     }
 
     @Override
