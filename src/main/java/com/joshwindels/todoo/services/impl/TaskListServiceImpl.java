@@ -37,6 +37,11 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
+    public void removeTaskListForUser(int taskListId, int userId) {
+        // TODO need to remove user/tasklist mapping
+    }
+
+    @Override
     public TaskList saveNewTaskList(TaskList taskList) {
         TaskList savedTaskList = taskListRepository.saveNewTaskList(taskList);
         taskListRepository.addTaskListAndUserMapping(currentUser.getId(), savedTaskList.getId());

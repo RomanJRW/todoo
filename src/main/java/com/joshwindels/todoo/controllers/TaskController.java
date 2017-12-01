@@ -25,7 +25,8 @@ public class TaskController {
     TaskService taskService;
 
     @PostMapping("/delete")
-    public String deleteTask(@RequestParam int taskId) {
+    public String deleteTask(
+            @RequestParam int taskId) {
         taskService.deleteTask(taskId);
         return "redirect:/todoo/lists";
     }

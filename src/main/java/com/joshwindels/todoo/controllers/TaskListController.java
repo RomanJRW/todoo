@@ -32,22 +32,33 @@ public class TaskListController {
     }
 
     @PostMapping("/add/{taskId}/{taskListId}")
-    public String addTaskToTaskList(@PathVariable(value = "taskId") int taskId,
+    public String addTaskToTaskList(
+            @PathVariable(value = "taskId") int taskId,
             @PathVariable(value = "taskListId") int taskListId) {
         taskListService.addTaskToTaskList(taskId, taskListId);
         return "redirect:/todoo/lists";
     }
 
     @PostMapping("/remove/{taskId}/{taskListId}")
-    public String removeTaskFromList(@PathVariable(value = "taskId") int taskId,
+    public String removeTaskFromList(
+            @PathVariable(value = "taskId") int taskId,
             @PathVariable(value = "taskListId") int taskListId) {
         taskListService.removeTaskFromTaskList(taskId, taskListId);
         return "redirect:/todoo/lists";
     }
 
     @PostMapping("/delete/{taskListId}")
-    public String deleteTaskList(@PathVariable(value = "taskListId") int taskListId) {
+    public String deleteTaskList(
+            @PathVariable(value = "taskListId") int taskListId) {
         taskListService.deleteTaskList(taskListId);
+        return "redirect:/todoo/lists";
+    }
+
+    @PostMapping("/remove/{taskListId}/user/{userId}")
+    public String removeTaskListForUser(
+            @PathVariable(value = "taskListId") int taskListId,
+            @PathVariable(value = "userId") int userId) {
+        taskListService.removeTaskListForUser(taskListId, userId);
         return "redirect:/todoo/lists";
     }
 
