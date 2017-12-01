@@ -31,6 +31,11 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
+    public void deleteTaskList(int taskListId) {
+        taskListRepository.deleteTaskList(taskListId);
+    }
+
+    @Override
     public TaskList saveNewTaskList(TaskList taskList) {
         TaskList savedTaskList = taskListRepository.saveNewTaskList(taskList);
         taskListRepository.addTaskListAndUserMapping(currentUser.getId(), savedTaskList.getId());

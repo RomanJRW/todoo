@@ -14,6 +14,8 @@ public interface TaskListRepository {
 
     void removeTaskFromTaskList(int taskId, int taskListId);
 
+    void deleteTaskList(int taskListId);
+
     List<Integer> getTaskListIdsForUser(int userId);
 
     void addTaskListAndUserMapping(int userId, int taskListId);

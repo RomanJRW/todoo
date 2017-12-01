@@ -45,6 +45,12 @@ public class TaskListController {
         return "redirect:/todoo/lists";
     }
 
+    @PostMapping("/remove/{taskListId}")
+    public String deleteTaskList(@PathVariable(value = "taskListId") int taskListId) {
+        taskListService.deleteTaskList(taskListId);
+        return "redirect:/todoo/lists";
+    }
+
     @GetMapping("/{taskListId}/csv")
     @ResponseBody
     public String downloadTaskList(@PathVariable(value = "taskListId") int taskListId) {
