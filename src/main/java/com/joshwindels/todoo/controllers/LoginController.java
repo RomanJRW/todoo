@@ -24,7 +24,7 @@ public class LoginController {
     TaskListService taskListService;
 
     @GetMapping("/login")
-    public String logInUser(Model model) {
+    public String logInUser() {
         if (currentUser.getId() == null) {
             return "login";
         } else {
@@ -32,8 +32,8 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/login/submit")
-    public String logInUser(Model model, String username, String password) {
+    @PostMapping("/login")
+    public String submitLogin(Model model, String username, String password) {
         Integer userId = userValidationService.getUserIdForLoginDetails(username, password);
         if (userId != null) {
             currentUser.setId(userId);
@@ -42,7 +42,7 @@ public class LoginController {
             return "redirect:/todoo/lists";
         } else {
             model.addAttribute("failedLogin", "incorrectPw");
-            return logInUser(model);
+            return "login";
         }
     }
 

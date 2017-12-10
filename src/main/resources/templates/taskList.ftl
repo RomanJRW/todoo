@@ -17,10 +17,6 @@
     <h2>
     ${toDoList.getName()}
     </h2>
-    <#else>
-    <h2>
-        My First Task List
-    </h2>
     </#if>
 
     <#if toDoList.tasks?size gt 5><p style = "font-size:20px ; color: red">Bloody hell, you're busy!</p></#if>
@@ -50,13 +46,13 @@
     <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
 
     <#else>
-    <form action="/tasklist/add" method="post">
-        New Task List Name:<br>
-        <input type="text" name="name"/>
-        <button type="submit">Submit</button>
-    </form>
-
 </#list>
+
+<form action="/tasklist/add" method="post">
+    New Task List Name:<br>
+    <input type="text" name="name"/>
+    <button type="submit">Submit</button>
+</form>
 
 </body>
 </html>

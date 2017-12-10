@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;

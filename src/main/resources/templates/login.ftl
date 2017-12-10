@@ -13,7 +13,7 @@
 
 <#if failedLogin??><p style = "font-size:25px ; color: red">Login attempt failed, please try again</p></#if>
 
-<form action="/todoo/login/submit" method="post">
+<form action="/todoo/login" method="post">
     Username</b>
     <input label="Username" type="text" name="username"/>
     Password</b>
