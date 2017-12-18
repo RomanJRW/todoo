@@ -3,6 +3,7 @@ package com.joshwindels.todoo.controllers;
 import java.util.List;
 
 import com.joshwindels.todoo.dos.CurrentUser;
+import com.joshwindels.todoo.services.PasswordEncryptionService;
 import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.UserValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class LoginController {
     UserValidationService userValidationService;
     @Autowired
     TaskListService taskListService;
+    @Autowired
+    PasswordEncryptionService passwordEncryptionService;
 
     @GetMapping("/login")
     public String logInUser() {
@@ -34,7 +37,8 @@ public class LoginController {
 
     @PostMapping("/login")
     public String submitLogin(Model model, String username, String password) {
-        Integer userId = userValidationService.getUserIdForLoginDetails(username, password);
+        String encryptedPassword = passwordEncryptionService.getEncryptedPassword(password);
+        Integer userId = userValidationService.getUserIdForLoginDetails(username, encryptedPassword);
         if (userId != null) {
             currentUser.setId(userId);
             List<Integer> taskListIds = taskListService.getTaskListIdsForUser(userId);
