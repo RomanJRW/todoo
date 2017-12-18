@@ -15,12 +15,24 @@ public class UserValidationRepositoryImpl implements UserValidationRepository {
     NamedParameterJdbcTemplate npjt;
 
     @Override
-    public Integer getUserIdForUserNameAndPassword(String username, String encryptedPassword) {
+    public Integer getCurrentUserForUserNameAndPassword(String username, String encryptedPassword) {
         String sql = "SELECT user_id "
                 + "   FROM user_details "
                 + "   WHERE username = :username "
                 + "   AND password = :password ";
         Map<String, String> params = new HashMap<>();
+        params.put("username", username);
+        params.put("password", encryptedPassword);
+        return npjt.queryForObject(sql, params, Integer.class);
+    }
+
+    @Override
+    public Integer createNewUser(String username, String encryptedPassword) {
+        String sql = " INSERT INTO user_details "
+                + " (username, password) "
+                + " VALUES ( :username, :password ) "
+                + " RETURNING user_id ";
+        Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         params.put("password", encryptedPassword);
         return npjt.queryForObject(sql, params, Integer.class);

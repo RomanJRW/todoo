@@ -28,4 +28,5 @@ public class CurrentUser {
     public void setTaskListIds(List<Integer> taskListIds) {
         this.taskListIds = taskListIds;
     }
+
 }

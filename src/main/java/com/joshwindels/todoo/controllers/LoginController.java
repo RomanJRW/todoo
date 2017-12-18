@@ -50,4 +50,17 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/register")
+    public String submitRegistration(Model model, String username, String password) {
+        String encryptedPassword = passwordEncryptionService.getEncryptedPassword(password);
+        Integer userId = userValidationService.createNewUser(username, encryptedPassword);
+        if (userId != null) {
+            currentUser.setId(userId);
+            return "redirect:/todoo/lists";
+        } else {
+            model.addAttribute("failedRegistration", "error");
+            return "login";
+        }
+    }
+
 }

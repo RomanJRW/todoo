@@ -2,6 +2,8 @@ package com.joshwindels.todoo.repositories;
 
 public interface UserValidationRepository {
 
-    Integer getUserIdForUserNameAndPassword(String username, String password);
+    Integer getCurrentUserForUserNameAndPassword(String username, String password);
+
+    Integer createNewUser(String username, String encryptedPassword);
 
 }
