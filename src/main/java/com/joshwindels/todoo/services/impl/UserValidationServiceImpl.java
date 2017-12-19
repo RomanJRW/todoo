@@ -1,7 +1,7 @@
 package com.joshwindels.todoo.services.impl;
 
-import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.repositories.UserValidationRepository;
+import com.joshwindels.todoo.services.PasswordService;
 import com.joshwindels.todoo.services.UserValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,14 +10,17 @@ import org.springframework.stereotype.Service;
 public class UserValidationServiceImpl implements UserValidationService {
 
     @Autowired
+    PasswordService passwordService;
+    @Autowired
     UserValidationRepository userValidationRepository;
 
     @Override
-    public Integer getUserIdForLoginDetails(String username, String encryptedPassword) {
-        if (username != null || encryptedPassword != null) {
-            return null;
+    public Integer getUserIdForLoginDetails(String username, String password) {
+        if (username != null || password != null
+                && passwordService.isCorrectPassword(username, password)) {
+            return userValidationRepository.getCurrentUserForUserNameAndPassword(username, password);
         } else {
-            return userValidationRepository.getCurrentUserForUserNameAndPassword(username, encryptedPassword);
+            return null;
         }
     }
 

@@ -1,8 +1,12 @@
 package com.joshwindels.todoo.repositories.impl;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.amdelamar.jhash.Hash;
+import com.amdelamar.jhash.exception.BadOperationException;
+import com.amdelamar.jhash.exception.InvalidHashException;
 import com.joshwindels.todoo.repositories.UserValidationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -36,6 +40,22 @@ public class UserValidationRepositoryImpl implements UserValidationRepository {
         params.put("username", username);
         params.put("password", encryptedPassword);
         return npjt.queryForObject(sql, params, Integer.class);
+    }
+
+    @Override
+    public boolean isValidCredentials(String username, String password) {
+        String passwordSql = "SELECT password " +
+                "FROM user_details WHERE username = :username";
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        String storedPassword = npjt.queryForObject(passwordSql, params, String.class);
+        boolean matchedPassword = false;
+        try {
+            matchedPassword = Hash.verify(password, storedPassword);
+        } catch (BadOperationException | NoSuchAlgorithmException | InvalidHashException ex) {
+            System.out.println("invalid credentials");
+        }
+        return matchedPassword;
     }
 
 }

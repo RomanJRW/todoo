@@ -6,4 +6,6 @@ public interface UserValidationRepository {
 
     Integer createNewUser(String username, String encryptedPassword);
 
+    boolean isValidCredentials(String username, String password);
+
 }
