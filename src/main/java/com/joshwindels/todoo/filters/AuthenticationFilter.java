@@ -28,7 +28,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        boolean isLoginPage = ((HttpServletRequest) request).getRequestURL().toString().contains("login");
+        boolean isLoginPage = ((HttpServletRequest) request).getRequestURL().toString().contains("/todoo/login");
         if ((!isLoginPage) && (currentUser.getId() == null)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.sendRedirect("/todoo/login");
