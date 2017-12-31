@@ -16,12 +16,13 @@ public class UserValidationServiceImpl implements UserValidationService {
 
     @Override
     public Integer getUserIdForLoginDetails(String username, String password) {
-        if (username != null || password != null
-                && passwordService.isCorrectPassword(username, password)) {
-            return userValidationRepository.getCurrentUserForUserNameAndPassword(username, password);
-        } else {
-            return null;
+        if (username != null || password != null) {
+            String encryptedPassword = passwordService.getEncryptedPassword(password);
+            if (encryptedPassword != null) {
+                return userValidationRepository.getCurrentUserForUserNameAndPassword(username, password);
+            }
         }
+        return null;
     }
 
     @Override

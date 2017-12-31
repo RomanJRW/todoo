@@ -28,8 +28,10 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        boolean isLoginPage = ((HttpServletRequest) request).getRequestURL().toString().contains("/todoo/login");
-        if ((!isLoginPage) && (currentUser.getId() == null)) {
+        HttpServletRequest httpServletRequest = ((HttpServletRequest) request);
+        boolean isLoginRequest = httpServletRequest.getRequestURL().toString().contains("/todoo/login");
+        boolean isRegistrationRequest = httpServletRequest.getRequestURL().toString().contains("/todoo/register");
+        if ((!isLoginRequest) && (!isRegistrationRequest) && (currentUser.getId() == null)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.sendRedirect("/todoo/login");
         }

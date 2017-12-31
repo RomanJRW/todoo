@@ -9,6 +9,7 @@ import com.amdelamar.jhash.exception.BadOperationException;
 import com.amdelamar.jhash.exception.InvalidHashException;
 import com.joshwindels.todoo.repositories.UserValidationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,15 +20,19 @@ public class UserValidationRepositoryImpl implements UserValidationRepository {
     NamedParameterJdbcTemplate npjt;
 
     @Override
-    public Integer getCurrentUserForUserNameAndPassword(String username, String encryptedPassword) {
-        String sql = "SELECT user_id "
+    public Integer getCurrentUserForUserNameAndPassword(String username, String password) {
+        String sql = "SELECT id "
                 + "   FROM user_details "
                 + "   WHERE username = :username "
                 + "   AND password = :password ";
         Map<String, String> params = new HashMap<>();
         params.put("username", username);
-        params.put("password", encryptedPassword);
-        return npjt.queryForObject(sql, params, Integer.class);
+        params.put("password", password);
+        try {
+            return npjt.queryForObject(sql, params, Integer.class);
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -35,7 +40,7 @@ public class UserValidationRepositoryImpl implements UserValidationRepository {
         String sql = " INSERT INTO user_details "
                 + " (username, password) "
                 + " VALUES ( :username, :password ) "
-                + " RETURNING user_id ";
+                + " RETURNING id ";
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         params.put("password", encryptedPassword);

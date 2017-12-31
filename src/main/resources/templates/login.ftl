@@ -14,21 +14,28 @@
 <#if failedLogin??><p style = "font-size:25px ; color: red">Login attempt failed, please try again</p></#if>
 
 <form action="/todoo/login" method="post">
-    Username</b>
+    Username<br>
     <input label="Username" type="text" name="username"/>
-    Password</b>
+    <br>
+    Password<br>
     <input label="Password" type="password" name="password"/>
-    <button type="submit">Submit</button>
+    <br>
+    <button type="submit">Log in</button>
 </form>
+
+<br>
+<br>
 
 <#if failedRegistration??><p style = "font-size:25px ; color: red">Registration failed, please try again</p></#if>
 
 <form action="/todoo/register" method="post">
-    Username</b>
+    Username<br>
     <input label="Username" type="text" name="username"/>
-    Password</b>
+    <br>
+    Password<br>
     <input label="Password" type="password" name="password"/>
-    <button type="submit">Submit</button>
+    <br>
+    <button type="submit">Register</button>
 </form>
 </body>
 </html>

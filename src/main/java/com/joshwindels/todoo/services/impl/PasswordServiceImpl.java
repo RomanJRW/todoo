@@ -27,8 +27,4 @@ public class PasswordServiceImpl implements PasswordService {
         return encryptedPassword;
     }
 
-    @Override
-    public boolean isCorrectPassword(String username, String password) {
-        return userValidationRepository.isValidCredentials(username, password);
-    }
 }

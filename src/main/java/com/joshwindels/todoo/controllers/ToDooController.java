@@ -3,12 +3,11 @@ package com.joshwindels.todoo.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.converters.TaskListConverter;
+import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.TaskService;
-import com.sun.tools.corba.se.idl.InterfaceGen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +30,8 @@ public class ToDooController {
     @GetMapping("/lists")
     public String getTaskLists(Model model) {
         List<TaskListDTO> taskLists = new ArrayList<>();
-        for (Integer taskListId : currentUser.getTaskListIds()) {
+        List<Integer> taskListIds = taskListService.getTaskListIdsForUser(currentUser.getId());
+        for (Integer taskListId : taskListIds) {
             taskLists.add(taskListConverter.convertToTaskDTO(
                     taskListService.getTaskListById(taskListId)));
         }

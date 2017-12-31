@@ -1,5 +1,6 @@
 package com.joshwindels.todoo.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.joshwindels.todoo.dos.CurrentUser;
@@ -54,6 +55,7 @@ public class LoginController {
         Integer userId = userValidationService.createNewUser(username, encryptedPassword);
         if (userId != null) {
             currentUser.setId(userId);
+            currentUser.setTaskListIds(Arrays.asList());
             return "redirect:/todoo/lists";
         } else {
             model.addAttribute("failedRegistration", "error");
