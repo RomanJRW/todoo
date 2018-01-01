@@ -6,7 +6,7 @@ import java.util.List;
 import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.services.PasswordService;
 import com.joshwindels.todoo.services.TaskListService;
-import com.joshwindels.todoo.services.UserValidationService;
+import com.joshwindels.todoo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +20,7 @@ public class LoginController {
 
     @Autowired
     CurrentUser currentUser;
-    @Autowired
-    UserValidationService userValidationService;
+    @Autowired UserService userService;
     @Autowired
     TaskListService taskListService;
     @Autowired PasswordService passwordService;
@@ -37,7 +36,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String submitLogin(Model model, String username, String password) {
-        Integer userId = userValidationService.getUserIdForLoginDetails(username, password);
+        Integer userId = userService.getUserIdForLoginDetails(username, password);
         if (userId != null) {
             currentUser.setId(userId);
             List<Integer> taskListIds = taskListService.getTaskListIdsForUser(userId);
@@ -51,8 +50,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public String submitRegistration(Model model, String username, String password) {
-        String encryptedPassword = passwordService.getEncryptedPassword(password);
-        Integer userId = userValidationService.createNewUser(username, encryptedPassword);
+        Integer userId = userService.createNewUser(username, password);
         if (userId != null) {
             currentUser.setId(userId);
             currentUser.setTaskListIds(Arrays.asList());

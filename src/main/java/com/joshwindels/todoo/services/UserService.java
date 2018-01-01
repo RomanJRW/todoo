@@ -1,8 +1,6 @@
 package com.joshwindels.todoo.services;
 
-import com.joshwindels.todoo.dos.CurrentUser;
-
-public interface UserValidationService {
+public interface UserService {
 
     Integer getUserIdForLoginDetails(String username, String password);
 
