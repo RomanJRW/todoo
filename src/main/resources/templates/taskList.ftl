@@ -37,22 +37,21 @@
         <input type="text" name="description"/>
         <button type="submit">Submit</button>
     </form>
-
-    <form action="/tasklist/delete/${toDoList.getId()}">Delete</form>
+    <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
     <form>
         <button formaction="/tasklist/delete/${toDoList.getId()}" name="taskListId" formmethod="post">Delete Task List</button>
-    </form>
-
-    <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
+    </form><br>
 
     <#else>
 </#list>
 
-<form action="/tasklist/add" method="post">
-    New Task List Name:<br>
-    <input type="text" name="name"/>
-    <button type="submit">Submit</button>
-</form>
+<p>
+    <form action="/tasklist/add" method="post">
+        New Task List Name:<br>
+        <input type="text" name="name"/>
+        <button type="submit">Submit</button>
+    </form>
+</p>
 
 </body>
 </html>
