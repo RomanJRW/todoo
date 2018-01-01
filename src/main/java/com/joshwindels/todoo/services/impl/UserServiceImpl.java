@@ -1,10 +1,14 @@
 package com.joshwindels.todoo.services.impl;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import com.joshwindels.todoo.repositories.UserRepository;
 import com.joshwindels.todoo.services.PasswordService;
 import com.joshwindels.todoo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -16,11 +20,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer getUserIdForLoginDetails(String username, String password) {
-        if (username != null || password != null) {
+        if (credentialsAreValid(username, password)) {
             boolean isCorrectPassword =
                     passwordService.isCorrectPasswordForUsername(username, password);
             if (isCorrectPassword) {
-                return userRepository.getCurrentUserIdForUserName(username);
+                return userRepository.getUserIdForUserName(username);
             }
         }
         return null;
@@ -28,12 +32,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer createNewUser(String username, String password) {
-        if (username != null || password != null) {
+        if (credentialsAreValid(username, password)
+                && usernameIsAvailable(username)) {
             String encryptedPassword = passwordService.getEncryptedPassword(password);
             return userRepository.createNewUser(username, encryptedPassword);
         } else {
             return null;
         }
+    }
+
+    private boolean credentialsAreValid(String username, String password) {
+        return usernameIsValid(username) && passwordIsValid(password);
+    }
+
+    private boolean usernameIsValid(String username) {
+        if (username == null || StringUtils.isEmpty(username)) {
+            return false;
+        }
+
+        boolean isValid = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(username);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    private boolean passwordIsValid(String password) {
+        if (password != null && !StringUtils.isEmpty(password)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean usernameIsAvailable(String username) {
+        return userRepository.getUserIdForUserName(username) == null;
     }
 
 }

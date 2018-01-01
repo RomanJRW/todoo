@@ -2,7 +2,7 @@ package com.joshwindels.todoo.repositories;
 
 public interface UserRepository {
 
-    Integer getCurrentUserIdForUserName(String username);
+    Integer getUserIdForUserName(String username);
 
     Integer createNewUser(String username, String encryptedPassword);
 

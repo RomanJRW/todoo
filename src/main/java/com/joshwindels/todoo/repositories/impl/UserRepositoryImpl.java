@@ -16,7 +16,7 @@ public class UserRepositoryImpl implements UserRepository {
     NamedParameterJdbcTemplate npjt;
 
     @Override
-    public Integer getCurrentUserIdForUserName(String username) {
+    public Integer getUserIdForUserName(String username) {
         String sql = "SELECT id "
                 + "   FROM user_details "
                 + "   WHERE username = :username ";

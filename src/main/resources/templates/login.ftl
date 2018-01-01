@@ -15,7 +15,7 @@
 
 <form action="/todoo/login" method="post">
     Username<br>
-    <input label="Username" type="text" name="username"/>
+    <input label="Email Address" type="text" name="username"/>
     <br>
     Password<br>
     <input label="Password" type="password" name="password"/>
@@ -30,7 +30,7 @@
 
 <form action="/todoo/register" method="post">
     Username<br>
-    <input label="Username" type="text" name="username"/>
+    <input label="Email Address" type="text" name="username"/>
     <br>
     Password<br>
     <input label="Password" type="password" name="password"/>
