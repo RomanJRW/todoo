@@ -81,7 +81,6 @@ public class TaskListRepositoryImpl implements TaskListRepository {
 
     @Override
     public void deleteTaskList(int taskListId) {
-        removeAllTasksFromTaskList(taskListId);
         String sql = " DELETE "
                 + " FROM task_lists "
                 + " WHERE id = :taskListId ";
@@ -108,15 +107,6 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 + "       task_list_id = :taskListId ";
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
-        params.put("taskListId", taskListId);
-        npjt.update(sql, params);
-    }
-
-    private void removeAllTasksFromTaskList(int taskListId) {
-        String sql = " DELETE "
-                + " FROM task_list_task_map "
-                + " WHERE task_list_id = :taskListId ";
-        Map<String, Object> params = new HashMap<>();
         params.put("taskListId", taskListId);
         npjt.update(sql, params);
     }
