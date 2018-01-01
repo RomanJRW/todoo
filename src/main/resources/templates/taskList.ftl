@@ -24,7 +24,7 @@
         <#list toDoList.getTasks() as item>
             <form>
                 <li>${item.getDescription()}</li>
-                <button value=${item.getId()} formaction="/task/delete" name="taskId" formmethod="post">Done</button>
+                <button formaction="/task/complete/${item.getId()}" name="taskId" formmethod="post">Complete</button>
             </form>
         </#list>
     </ul>

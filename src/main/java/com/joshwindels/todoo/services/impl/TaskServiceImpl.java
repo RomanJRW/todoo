@@ -28,4 +28,10 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getTasksForTaskListId(int taskListId) {
         return taskRepository.getTasksByTaskListId(taskListId);
     }
+
+    @Override
+    public void completeTask(int taskId) {
+        taskRepository.completeTask(taskId);
+    }
+
 }

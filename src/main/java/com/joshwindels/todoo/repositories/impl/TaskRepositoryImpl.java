@@ -59,4 +59,14 @@ public class TaskRepositoryImpl implements TaskRepository {
         npjt.update(sql, params);
     }
 
+    @Override
+    public void completeTask(int taskId) {
+        String sql = " UPDATE tasks "
+                + "   SET completed = TRUE "
+                + "   WHERE id = :taskId ";
+        Map<String, Integer> params = new HashMap<>();
+        params.put("taskId", taskId);
+        npjt.update(sql, params);
+    }
+
 }

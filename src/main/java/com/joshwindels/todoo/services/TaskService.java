@@ -12,4 +12,6 @@ public interface TaskService {
 
     List<Task> getTasksForTaskListId(int taskListId);
 
+    void completeTask(int taskId);
+
 }

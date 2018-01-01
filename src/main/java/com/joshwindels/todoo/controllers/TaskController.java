@@ -41,10 +41,9 @@ public class TaskController {
         return "redirect:/todoo/lists";
     }
 
-    @PostMapping("/update")
-    public String updateTask(@RequestBody TaskDTO taskDTO) {
-        Task task = taskConverter.convertToTask(taskDTO);
-        taskService.saveTask(task);
+    @PostMapping("/complete/{taskId}")
+    public String completeTask(@PathVariable(value = "taskId") int taskId) {
+        taskService.completeTask(taskId);
         return "redirect:/todoo/lists";
     }
 
