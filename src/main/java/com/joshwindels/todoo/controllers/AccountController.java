@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/todoo")
-public class LoginController {
+public class AccountController {
 
     @Autowired
     CurrentUser currentUser;
-    @Autowired UserService userService;
+    @Autowired
+    UserService userService;
     @Autowired
     TaskListService taskListService;
     @Autowired PasswordService passwordService;
@@ -46,6 +47,14 @@ public class LoginController {
             model.addAttribute("failedLogin", "incorrectPw");
             return "login";
         }
+    }
+
+    @PostMapping("/logout")
+    public String submitLogout(Model model, String username, String password) {
+        currentUser.setId(null);
+        currentUser.setTaskListIds(null);
+        model.addAttribute("logout", "successful");
+        return "login";
     }
 
     @PostMapping("/register")

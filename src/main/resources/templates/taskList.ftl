@@ -37,12 +37,13 @@
         <input type="text" name="description"/>
         <button type="submit">Submit</button>
     </form>
-    <a href="/tasklist/${toDoList.getId()}/csv" download="my_tasks.csv">Download</a>
+    <a href="/tasklist/${toDoList.getId()}/csv" download="${toDoList.getName()}.csv">Download</a>
     <form>
         <button formaction="/tasklist/delete/${toDoList.getId()}" name="taskListId" formmethod="post">Delete Task List</button>
-    </form><br>
+    </form>
+    <br>
+    <br>
 
-    <#else>
 </#list>
 
 <p>
@@ -50,6 +51,14 @@
         New Task List Name:<br>
         <input type="text" name="name"/>
         <button type="submit">Submit</button>
+    </form>
+</p>
+
+<p>
+    <br>
+    <br>
+    <form>
+        <button formaction="/todoo/logout" formmethod="post">Sign out</button>
     </form>
 </p>
 

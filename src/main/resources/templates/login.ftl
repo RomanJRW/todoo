@@ -11,6 +11,8 @@
     Welcome to Todoo
 </h1>
 
+<#if logout??><p style = "font-size:25px ; color: red">Successfully signed out</p></#if>
+
 <#if failedLogin??><p style = "font-size:25px ; color: red">Login attempt failed, please try again</p></#if>
 
 <form action="/todoo/login" method="post">
