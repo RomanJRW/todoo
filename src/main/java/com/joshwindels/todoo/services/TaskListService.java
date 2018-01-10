@@ -14,6 +14,8 @@ public interface TaskListService {
 
     void removeTaskListForUser(int taskListId, int userId);
 
+    void addTaskListForUser(int taskListId, int userId);
+
     TaskList saveNewTaskList(TaskList taskList);
 
     TaskList getTaskListById(int taskListId);

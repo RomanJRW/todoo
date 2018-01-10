@@ -5,12 +5,14 @@ import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.CsvConverterService;
 import com.joshwindels.todoo.services.TaskListService;
+import com.joshwindels.todoo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -21,6 +23,8 @@ public class TaskListController {
     private TaskListService taskListService;
     @Autowired
     private CsvConverterService csvConverterService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private TaskListConverter taskListConverter;
 
@@ -54,11 +58,25 @@ public class TaskListController {
         return "redirect:/todoo/lists";
     }
 
-    @PostMapping("/remove/{taskListId}/user/{userId}")
+    @PostMapping("/remove/{taskListId}/user")
     public String removeTaskListForUser(
             @PathVariable(value = "taskListId") int taskListId,
-            @PathVariable(value = "userId") int userId) {
-        taskListService.removeTaskListForUser(taskListId, userId);
+            String username) {
+        Integer userId = userService.getUserIdForUsername(username);
+        if (userId != null) {
+            taskListService.removeTaskListForUser(taskListId, userId);
+        }
+        return "redirect:/todoo/lists";
+    }
+
+    @PostMapping("/add/{taskListId}/user")
+    public String addTaskListForUser(
+            @PathVariable(value = "taskListId") int taskListId,
+            String username) {
+        Integer userId = userService.getUserIdForUsername(username);
+        if (userId != null) {
+            taskListService.addTaskListForUser(taskListId, userId);
+        }
         return "redirect:/todoo/lists";
     }
 

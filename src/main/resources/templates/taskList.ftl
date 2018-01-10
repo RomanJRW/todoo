@@ -37,11 +37,20 @@
         <input type="text" name="description"/>
         <button type="submit">Submit</button>
     </form>
-    <a href="/tasklist/${toDoList.getId()}/csv" download="${toDoList.getName()}.csv">Download</a>
+    <br>
+    <br>
+    <form action="/tasklist/add/${toDoList.getId()}/user" method="post">
+        Share list with user<br>
+        Username<br>
+        <input type="text" name="username"/>
+        <button type="submit">Submit</button>
+    </form>
+    <br>
     <form>
         <button formaction="/tasklist/delete/${toDoList.getId()}" name="taskListId" formmethod="post">Delete Task List</button>
     </form>
     <br>
+    <a href="/tasklist/${toDoList.getId()}/csv" download="${toDoList.getName()}.csv">Download</a>
     <br>
 
 </#list>

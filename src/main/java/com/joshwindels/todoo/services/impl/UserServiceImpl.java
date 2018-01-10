@@ -31,6 +31,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer getUserIdForUsername(String username) {
+        return userRepository.getUserIdForUserName(username);
+    }
+
+    @Override
     public Integer createNewUser(String username, String password) {
         if (credentialsAreValid(username, password)
                 && usernameIsAvailable(username)) {
