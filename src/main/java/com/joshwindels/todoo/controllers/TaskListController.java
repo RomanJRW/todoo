@@ -5,7 +5,6 @@ import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.CsvConverterService;
 import com.joshwindels.todoo.services.TaskListService;
-import com.joshwindels.todoo.services.UserService;
 import com.joshwindels.todoo.services.UserTaskListSharingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,8 +69,9 @@ public class TaskListController {
     @PostMapping("/share/{taskListId}/user/{userId}")
     public String shareTaskListWithUser(
             @PathVariable(value = "taskListId") int taskListId,
-            @PathVariable(value = "userId") int userId) {
-        userTaskListSharingService.shareTaskListWithUser(taskListId, userId);
+            @PathVariable(value = "userId") int userId,
+            @RequestParam(required = false) boolean isOwner) {
+        userTaskListSharingService.shareTaskListWithUser(taskListId, userId, isOwner);
         return "redirect:/todoo/lists";
     }
 

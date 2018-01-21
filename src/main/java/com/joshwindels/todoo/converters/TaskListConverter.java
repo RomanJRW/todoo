@@ -15,7 +15,7 @@ public class TaskListConverter {
         return taskList;
     }
 
-    public TaskListDTO convertToTaskDTO(TaskList taskList) {
+    public TaskListDTO convertToTaskListDTO(TaskList taskList) {
         TaskListDTO taskListDTO = new TaskListDTO();
         taskListDTO.setId(taskList.getId());
         taskListDTO.setName(taskList.getName());

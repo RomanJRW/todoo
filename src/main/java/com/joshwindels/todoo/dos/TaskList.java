@@ -3,6 +3,7 @@ package com.joshwindels.todoo.dos;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ public class TaskList implements Serializable {
     private int id;
     private String name;
     private List<Task> tasks;
+    private Set<Integer> ownerIds;
 
     public TaskList() {
         tasks = new ArrayList<>();
@@ -47,5 +49,13 @@ public class TaskList implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Integer> getOwnerIds() {
+        return ownerIds;
+    }
+
+    public void setOwnerIds(Set<Integer> ownerIds) {
+        this.ownerIds = ownerIds;
     }
 }

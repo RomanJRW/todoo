@@ -18,7 +18,7 @@ public interface TaskListRepository {
 
     List<Integer> getTaskListIdsForUser(int userId);
 
-    void addTaskListForUser(int userId, int taskListId);
+    void addTaskListForUser(int userId, int taskListId, boolean isAdmin);
 
     void removeTaskListForUser(int taskListId, int userId);
 

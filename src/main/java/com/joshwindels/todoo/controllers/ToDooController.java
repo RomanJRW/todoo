@@ -8,6 +8,7 @@ import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.TaskService;
+import com.joshwindels.todoo.services.UserTaskListSharingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,17 +27,32 @@ public class ToDooController {
     TaskListConverter taskListConverter;
     @Autowired
     CurrentUser currentUser;
+    @Autowired
+    UserTaskListSharingService userTaskListSharingService;
 
     @GetMapping("/lists")
     public String getTaskLists(Model model) {
-        List<TaskListDTO> taskLists = new ArrayList<>();
-        List<Integer> taskListIds = taskListService.getTaskListIdsForUser(currentUser.getId());
-        for (Integer taskListId : taskListIds) {
-            taskLists.add(taskListConverter.convertToTaskDTO(
-                    taskListService.getTaskListById(taskListId)));
-        }
-        model.addAttribute("toDoLists", taskLists);
+        model.addAttribute("toDoLists", populateTaskLists());
+        model.addAttribute("shareableUsers", populateShareableUsers());
         return "taskList";
+    }
+
+    private Object populateShareableUsers() {
+        return null;
+
+    }
+
+    private List<TaskListDTO> populateTaskLists() {
+        List<TaskListDTO> taskLists = new ArrayList<>();
+        int userId = currentUser.getId();
+        taskListService.getTaskListIdsForUser(userId).stream()
+                .forEach(tl -> taskLists.add(convertToDTO(tl)));
+        return taskLists;
+    }
+
+    private TaskListDTO convertToDTO(Integer taskListId) {
+        return taskListConverter.convertToTaskListDTO(
+                taskListService.getTaskListById(taskListId));
     }
 
 }

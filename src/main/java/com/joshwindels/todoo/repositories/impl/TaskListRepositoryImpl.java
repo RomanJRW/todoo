@@ -90,13 +90,14 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     }
 
     @Override
-    public void addTaskListForUser(int userId, int taskListId) {
+    public void addTaskListForUser(int userId, int taskListId, boolean isOwner) {
         String sql = " INSERT INTO user_task_list_map "
-                + " (user_id, task_list_id) "
-                + " VALUES (:userId, :taskListId) ";
+                + " (user_id, task_list_id, isAdmin) "
+                + " VALUES (:userId, :taskListId, :isOwner) ";
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("taskListId", taskListId);
+        params.put("isOwner", isOwner);
         npjt.update(sql, params);
     }
 
