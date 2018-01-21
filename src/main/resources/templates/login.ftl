@@ -31,6 +31,12 @@
 <#if failedRegistration??><p style = "font-size:25px ; color: red">Registration failed, please try again</p></#if>
 
 <form action="/todoo/register" method="post">
+    First name<br>
+    <input label="First Name" type="text" name="firstName"/>
+    <br>
+    Surname<br>
+    <input label="Surname" type="text" name="lastName"/>
+    <br>
     Username<br>
     <input label="Email Address" type="text" name="username"/>
     <br>
