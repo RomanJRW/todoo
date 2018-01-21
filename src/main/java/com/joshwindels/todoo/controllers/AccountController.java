@@ -3,7 +3,10 @@ package com.joshwindels.todoo.controllers;
 import java.util.Arrays;
 import java.util.List;
 
+import com.joshwindels.todoo.converters.UserConverter;
 import com.joshwindels.todoo.dos.CurrentUser;
+import com.joshwindels.todoo.dos.User;
+import com.joshwindels.todoo.dtos.UserDTO;
 import com.joshwindels.todoo.services.PasswordService;
 import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.UserService;
@@ -24,7 +27,10 @@ public class AccountController {
     UserService userService;
     @Autowired
     TaskListService taskListService;
-    @Autowired PasswordService passwordService;
+    @Autowired
+    PasswordService passwordService;
+    @Autowired
+    UserConverter userConverter;
 
     @GetMapping("/login")
     public String logInUser() {
@@ -58,8 +64,9 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String submitRegistration(Model model, String username, String password) {
-        Integer userId = userService.createNewUser(username, password);
+    public String submitRegistration(Model model, UserDTO userDTO) {
+        User user = userConverter.convertToUser(userDTO);
+        Integer userId = userService.createNewUser(user);
         if (userId != null) {
             currentUser.setId(userId);
             currentUser.setTaskListIds(Arrays.asList());

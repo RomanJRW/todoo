@@ -3,6 +3,7 @@ package com.joshwindels.todoo.repositories.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.joshwindels.todoo.dos.User;
 import com.joshwindels.todoo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -18,7 +19,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Integer getUserIdForUserName(String username) {
         String sql = "SELECT id "
-                + "   FROM user_details "
+                + "   FROM user_credentials "
                 + "   WHERE username = :username ";
         Map<String, String> params = new HashMap<>();
         params.put("username", username);
@@ -34,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public String getStoredPasswordForUsername(String username) {
         String sql = "SELECT password "
-                + "   FROM user_details "
+                + "   FROM user_credentials "
                 + "   WHERE username = :username ";
         Map<String, String> params = new HashMap<>();
         params.put("username", username);
@@ -48,14 +49,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Integer createNewUser(String username, String encryptedPassword) {
-        String sql = " INSERT INTO user_details "
-                + " (username, password) "
-                + " VALUES ( :username, :password ) "
-                + " RETURNING id ";
+    public Integer createNewUser(User user) {
+        String sql = " "
+                + " WITH cred AS ( "
+                + "    INSERT INTO user_credentials "
+                + "    (username, password) "
+                + "    VALUES ( :username, :password ) "
+                + "    RETURNING id AS user_id ) "
+                + " INSERT into user_details "
+                + "    (user_id, :firstName, :lastName )   ";
         Map<String, Object> params = new HashMap<>();
-        params.put("username", username);
-        params.put("password", encryptedPassword);
+        params.put("username", user.getUsername());
+        params.put("password", user.getPassword());
+        params.put("firstName", user.getFirstName());
+        params.put("lastName", user.getLastName());
         return npjt.queryForObject(sql, params, Integer.class);
     }
 

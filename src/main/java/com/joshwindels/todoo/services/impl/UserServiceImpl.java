@@ -3,6 +3,7 @@ package com.joshwindels.todoo.services.impl;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import com.joshwindels.todoo.dos.User;
 import com.joshwindels.todoo.repositories.UserRepository;
 import com.joshwindels.todoo.services.PasswordService;
 import com.joshwindels.todoo.services.UserService;
@@ -36,11 +37,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer createNewUser(String username, String password) {
+    public Integer createNewUser(User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();
         if (credentialsAreValid(username, password)
                 && usernameIsAvailable(username)) {
             String encryptedPassword = passwordService.getEncryptedPassword(password);
-            return userRepository.createNewUser(username, encryptedPassword);
+            user.setPassword(encryptedPassword);
+            return userRepository.createNewUser(user);
         } else {
             return null;
         }
