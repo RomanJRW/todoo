@@ -19,14 +19,22 @@ CREATE TABLE tasks
     completed BOOLEAN NOT NULL
 );
 CREATE UNIQUE INDEX tasks_id_uindex ON tasks (id);
-CREATE TABLE user_details
+CREATE TABLE user_credentials
 (
     id INTEGER DEFAULT nextval('user_details_id_seq'::regclass) PRIMARY KEY NOT NULL,
     username VARCHAR(250) NOT NULL,
     password VARCHAR(100) NOT NULL
 );
-CREATE UNIQUE INDEX user_details_user_id_uindex ON user_details (id);
-CREATE UNIQUE INDEX user_details_username_uindex ON user_details (username);
+CREATE UNIQUE INDEX user_credentials_user_id_uindex ON user_credentials (id);
+CREATE UNIQUE INDEX user_credentials_username_uindex ON user_credentials (username);
+CREATE TABLE user_details
+(
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    user_id INTEGER PRIMARY KEY NOT NULL,
+    CONSTRAINT user_details_user_credentials_id_fk FOREIGN KEY (user_id) REFERENCES user_credentials (id)
+);
+CREATE UNIQUE INDEX user_details_user_id_uindex ON user_details (user_id);
 CREATE TABLE user_task_list_map
 (
     user_id INTEGER NOT NULL,
