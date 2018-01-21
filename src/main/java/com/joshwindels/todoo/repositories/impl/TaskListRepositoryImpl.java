@@ -41,38 +41,44 @@ public class TaskListRepositoryImpl implements TaskListRepository {
         Map<String, Integer> params = new HashMap<>();
         params.put("userId", userId);
 
-        return npjt.query(sql, new ResultSetExtractor<List<TaskList>>() {
+        List<TaskList> userTaskLists = new ArrayList<>();
+        try {
+            userTaskLists = npjt.query(sql, new ResultSetExtractor<List<TaskList>>() {
 
-            @Override
-            public List<TaskList> extractData(ResultSet resultSet)
-                    throws SQLException, DataAccessException {
-                List<TaskList> taskLists = new ArrayList<>();
-                while(resultSet.next()) {
-                    Task task = new Task();
-                    task.setId(resultSet.getInt("task_id"));
-                    task.setDescription(resultSet.getString("task_description"));
-                    task.setCompleted(resultSet.getBoolean("task_completed"));
+                @Override
+                public List<TaskList> extractData(ResultSet resultSet)
+                        throws SQLException, DataAccessException {
+                    List<TaskList> taskLists = new ArrayList<>();
+                    while(resultSet.next()) {
+                        Task task = new Task();
+                        task.setId(resultSet.getInt("task_id"));
+                        task.setDescription(resultSet.getString("task_description"));
+                        task.setCompleted(resultSet.getBoolean("task_completed"));
 
-                    TaskList taskList;
-                    int taskListId = resultSet.getInt("id");
-                    Optional<TaskList> otl = taskLists.stream()
-                            .filter(tl -> tl.getId() == taskListId)
-                            .findFirst();
-                    if (otl.isPresent()) {
-                        taskList = otl.get();
-                        taskList.getOwnerIds().add(resultSet.getInt("owner_id"));
-                    } else {
-                        taskList = new TaskList();
-                        taskList.setId(resultSet.getInt("id"));
-                        taskList.setName(resultSet.getString("name"));
-                        taskList.setOwnerIds(Collections.singleton(resultSet.getInt("owner_id")));
+                        TaskList taskList;
+                        int taskListId = resultSet.getInt("id");
+                        Optional<TaskList> otl = taskLists.stream()
+                                .filter(tl -> tl.getId() == taskListId)
+                                .findFirst();
+                        if (otl.isPresent()) {
+                            taskList = otl.get();
+                            taskList.getOwnerIds().add(resultSet.getInt("owner_id"));
+                        } else {
+                            taskList = new TaskList();
+                            taskList.setId(resultSet.getInt("id"));
+                            taskList.setName(resultSet.getString("name"));
+                            taskList.setOwnerIds(Collections.singleton(resultSet.getInt("owner_id")));
+                        }
+                        taskList.addTask(task);
                     }
-                    taskList.addTask(task);
-                }
 
-                return taskLists;
-            }
-        });
+                    return taskLists;
+                }
+            });
+        } catch (DataAccessException e) {
+            // Might need to log something here, but would occur when user has no lists
+        }
+        return userTaskLists;
     }
 
     @Override
