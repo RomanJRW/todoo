@@ -8,7 +8,7 @@ public class UserTaskListSharingServiceImpl implements UserTaskListSharingServic
 
     @Override
     public void shareTaskListWithUser(int taskListId, int userId) {
-        
+
     }
 
     @Override

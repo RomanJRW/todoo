@@ -39,6 +39,7 @@ CREATE TABLE user_task_list_map
 (
     user_id INTEGER NOT NULL,
     task_list_id INTEGER NOT NULL,
+    is_admin BOOLEAN NOT NULL,
     CONSTRAINT user_task_list_map_user_id_task_list_id_pk PRIMARY KEY (user_id, task_list_id),
     CONSTRAINT user_task_list_map_task_lists_id_fk FOREIGN KEY (task_list_id) REFERENCES task_lists (id) ON DELETE CASCADE
 );
