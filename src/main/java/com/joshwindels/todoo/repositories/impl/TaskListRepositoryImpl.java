@@ -29,16 +29,6 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     TaskListRowMapper taskListRowMapper;
 
     @Override
-    public List<Integer> getTaskListIdsForUser(int userId, boolean ownedOnly) {
-        String sql = "SELECT task_list_id "
-                + "   FROM user_task_list_map "
-                + "   WHERE user_id = :userId ";
-        Map<String, Integer> params = new HashMap<>();
-        params.put("userId", userId);
-        return npjt.queryForList(sql, params, Integer.class);
-    }
-
-    @Override
     public List<TaskList> getTaskListsForUser(int userId) {
         String sql = " SELECT task_lists.id AS id, task_lists.name AS name, tasks.id AS task_id, tasks.description AS task_description, tasks.completed AS task_completed, "
                 + "  user_task_list_map.user_id AS owner_id, user_task_list_map.is_owner "
