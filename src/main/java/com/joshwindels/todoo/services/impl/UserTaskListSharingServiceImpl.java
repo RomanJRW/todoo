@@ -25,7 +25,6 @@ public class UserTaskListSharingServiceImpl implements UserTaskListSharingServic
 
     @Override
     public Set<Integer> getOwnerIdsForTaskList(int taskListId) {
-
-        return null;
+        return taskListRepository.getOwnerIdsForTaskList(taskListId);
     }
 }

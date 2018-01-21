@@ -16,6 +16,6 @@ public interface TaskListService {
 
     TaskList getTaskListById(int taskListId);
 
-    List<Integer> getTaskListIdsForUser(int userId);
+    List<TaskList> getTaskListsForUser(int userId);
 
 }

@@ -46,8 +46,6 @@ public class AccountController {
         Integer userId = userService.getUserIdForLoginDetails(username, password);
         if (userId != null) {
             currentUser.setId(userId);
-            List<Integer> taskListIds = taskListService.getTaskListIdsForUser(userId);
-            currentUser.setTaskListIds(taskListIds);
             return "redirect:/todoo/lists";
         } else {
             model.addAttribute("failedLogin", "incorrectPw");

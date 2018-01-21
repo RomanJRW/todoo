@@ -1,10 +1,13 @@
 package com.joshwindels.todoo.repositories;
 
 import java.util.List;
+import java.util.Set;
 
 import com.joshwindels.todoo.dos.TaskList;
 
 public interface TaskListRepository {
+
+    List<TaskList> getTaskListsForUser(int userId);
 
     TaskList getTaskListById(int taskListId);
 
@@ -16,7 +19,7 @@ public interface TaskListRepository {
 
     void deleteTaskList(int taskListId);
 
-    List<Integer> getTaskListIdsForUser(int userId);
+    List<Integer> getTaskListIdsForUser(int userId, boolean ownedOnly);
 
     void addTaskListForUser(int userId, int taskListId, boolean isAdmin);
 

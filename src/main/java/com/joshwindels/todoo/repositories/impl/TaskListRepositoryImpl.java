@@ -1,14 +1,22 @@
 package com.joshwindels.todoo.repositories.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,13 +29,60 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     TaskListRowMapper taskListRowMapper;
 
     @Override
-    public List<Integer> getTaskListIdsForUser(int userId) {
+    public List<Integer> getTaskListIdsForUser(int userId, boolean ownedOnly) {
         String sql = "SELECT task_list_id "
                 + "   FROM user_task_list_map "
                 + "   WHERE user_id = :userId ";
         Map<String, Integer> params = new HashMap<>();
         params.put("userId", userId);
         return npjt.queryForList(sql, params, Integer.class);
+    }
+
+    @Override
+    public List<TaskList> getTaskListsForUser(int userId) {
+        String sql = " SELECT task_lists.id AS id, task_lists.name AS name, tasks.id AS task_id, tasks.description AS task_description, tasks.completed AS task_completed, "
+                + "  user_task_list_map.user_id AS owner_id, user_task_list_map.is_owner "
+                + "FROM task_lists "
+                + "  LEFT JOIN task_list_task_map ON task_lists.id = task_list_task_map.task_list_id "
+                + "  LEFT JOIN tasks ON task_list_task_map.task_id = tasks.id "
+                + "  LEFT JOIN user_task_list_map ON task_lists.id = user_task_list_map.task_list_id "
+                + "WHERE user_task_list_map.user_id = :userId";
+
+        Map<String, Integer> params = new HashMap<>();
+        params.put("userId", userId);
+
+        return npjt.query(sql, new ResultSetExtractor<List<TaskList>>() {
+
+            @Override
+            public List<TaskList> extractData(ResultSet resultSet)
+                    throws SQLException, DataAccessException {
+                List<TaskList> taskLists = new ArrayList<>();
+                while(resultSet.next()) {
+                    Task task = new Task();
+                    task.setId(resultSet.getInt("task_id"));
+                    task.setDescription(resultSet.getString("task_description"));
+                    task.setCompleted(resultSet.getBoolean("task_completed"));
+
+                    TaskList taskList;
+                    int taskListId = resultSet.getInt("id");
+                    Optional<TaskList> otl = taskLists.stream()
+                            .filter(tl -> tl.getId() == taskListId)
+                            .findFirst();
+                    if (otl.isPresent()) {
+                        taskList = otl.get();
+                        taskList.getOwnerIds().add(resultSet.getInt("owner_id"));
+                    } else {
+                        taskList = new TaskList();
+                        taskList.setId(resultSet.getInt("id"));
+                        taskList.setName(resultSet.getString("name"));
+                        taskList.setOwnerIds(Collections.singleton(resultSet.getInt("owner_id")));
+                    }
+                    taskList.addTask(task);
+                }
+
+                return taskLists;
+            }
+        });
     }
 
     @Override

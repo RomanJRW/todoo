@@ -54,8 +54,8 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
-    public List<Integer> getTaskListIdsForUser(int userId) {
-        return taskListRepository.getTaskListIdsForUser(userId);
+    public List<TaskList> getTaskListsForUser(int userId) {
+        return taskListRepository.getTaskListsForUser(userId);
     }
 
 }

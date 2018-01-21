@@ -2,6 +2,7 @@ package com.joshwindels.todoo.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.joshwindels.todoo.converters.TaskListConverter;
 import com.joshwindels.todoo.dos.CurrentUser;
@@ -33,26 +34,13 @@ public class ToDooController {
     @GetMapping("/lists")
     public String getTaskLists(Model model) {
         model.addAttribute("toDoLists", populateTaskLists());
-        model.addAttribute("shareableUsers", populateShareableUsers());
         return "taskList";
     }
 
-    private Object populateShareableUsers() {
-        return null;
-
-    }
-
     private List<TaskListDTO> populateTaskLists() {
-        List<TaskListDTO> taskLists = new ArrayList<>();
-        int userId = currentUser.getId();
-        taskListService.getTaskListIdsForUser(userId).stream()
-                .forEach(tl -> taskLists.add(convertToDTO(tl)));
-        return taskLists;
-    }
-
-    private TaskListDTO convertToDTO(Integer taskListId) {
-        return taskListConverter.convertToTaskListDTO(
-                taskListService.getTaskListById(taskListId));
+        return taskListService.getTaskListsForUser(currentUser.getId()).stream()
+                .map(tl -> taskListConverter.convertToTaskListDTO(tl))
+                .collect(Collectors.toList());
     }
 
 }
