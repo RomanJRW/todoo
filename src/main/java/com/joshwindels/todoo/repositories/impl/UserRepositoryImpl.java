@@ -27,6 +27,8 @@ public class UserRepositoryImpl implements UserRepository {
             return npjt.queryForObject(sql, params, Integer.class);
         } catch (DataAccessException ex) {
             //temporary shite error handling
+            // Note that this should throw new error, as this is expected to be thrown
+            // when checking for new username availability
             System.out.println("Error getting user");
             return null;
         }
@@ -56,8 +58,10 @@ public class UserRepositoryImpl implements UserRepository {
                 + "    (username, password) "
                 + "    VALUES ( :username, :password ) "
                 + "    RETURNING id AS user_id ) "
-                + " INSERT into user_details "
-                + "    (user_id, :firstName, :lastName )   ";
+                + " INSERT INTO user_details"
+                + "    ( user_id, first_name, last_name  ) "
+                + "    VALUES ( (SELECT user_id FROM cred) , :firstName, :lastName )"
+                + "    RETURNING user_id   ";
         Map<String, Object> params = new HashMap<>();
         params.put("username", user.getUsername());
         params.put("password", user.getPassword());
