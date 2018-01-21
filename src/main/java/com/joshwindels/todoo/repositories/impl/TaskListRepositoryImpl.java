@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -96,14 +97,57 @@ public class TaskListRepositoryImpl implements TaskListRepository {
     }
 
     @Override
-    public TaskList saveNewTaskList(TaskList taskList) {
-        String sql = " INSERT INTO task_lists "
-                + " (name) "
-                + " VALUES ( :taskListName )"
-                + " RETURNING * ";
+    public Integer saveNewTaskList(TaskList taskList) {
+        String tlSql =
+                " INSERT INTO task_lists "
+                + "    ( name ) "
+                + "    VALUES ( :name ) "
+                + "    RETURNING id AS tl_id ) ";
         Map<String, Object> params = new HashMap<>();
-        params.put("taskListName", taskList.getName());
-        return npjt.queryForObject(sql, params, taskListRowMapper);
+        params.put("name", taskList.getName());
+        Integer taskListId = npjt.queryForObject(tlSql, params, Integer.class);
+
+        List<Integer> ownerIds = new ArrayList<>(taskList.getOwnerIds());
+        String umSql =
+                " INSERT INTO user_task_list_map "
+                + "    ( user_id, task_list_id ) "
+                + "    VALUES ( :userId , :taskListId )";
+        List<Map<String, Object>> batchValues = new ArrayList<>(ownerIds.size());
+        for (Integer ownerId : ownerIds) {
+            batchValues.add(
+                    new MapSqlParameterSource("userId", ownerId)
+                            .addValue("taskListId", taskListId)
+                            .getValues());
+        }
+        npjt.batchUpdate(umSql, batchValues.toArray(new Map[ownerIds.size()]));
+
+        if (!taskList.getTasks().isEmpty()) {
+            String taskSql =
+                    "  INSERT INTO tasks "
+                    + "  (description, completed) "
+                    + "   VALUES (:description, :completed) "
+                    + "   RETURNING id ";
+            List<Integer> taskIds = new ArrayList<>();
+            for (Task task : taskList.getTasks()) {
+                params.put("description", task.getDescription());
+                params.put("completed", task.isCompleted());
+                taskIds.add(npjt.queryForObject(taskSql, params, Integer.class));
+            }
+
+            String ttlSql =
+                    "  INSERT INTO task_list_task_map "
+                            + "  (task_id, task_list_id) "
+                            + "   VALUES (:taskId, :taskListId) ";
+            List<Map<String, Object>> ttlBatchValues = new ArrayList<>(taskIds.size());
+            for (Integer taskId : taskIds) {
+                ttlBatchValues.add(
+                        new MapSqlParameterSource("taskId", taskId)
+                                .addValue("taskListId", taskListId)
+                                .getValues());
+            }
+            npjt.batchUpdate(ttlSql, ttlBatchValues.toArray(new Map[taskIds.size()]));
+        }
+        return taskListId;
     }
 
     @Override

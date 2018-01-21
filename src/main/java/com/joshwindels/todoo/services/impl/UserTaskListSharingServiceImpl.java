@@ -1,7 +1,5 @@
 package com.joshwindels.todoo.services.impl;
 
-import java.util.Set;
-
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.services.UserTaskListSharingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,4 @@ public class UserTaskListSharingServiceImpl implements UserTaskListSharingServic
         taskListRepository.removeTaskListForUser(taskListId, userId);
     }
 
-    @Override
-    public Set<Integer> getOwnerIdsForTaskList(int taskListId) {
-        return taskListRepository.getOwnerIdsForTaskList(taskListId);
-    }
 }

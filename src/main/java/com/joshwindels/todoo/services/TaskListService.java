@@ -12,7 +12,7 @@ public interface TaskListService {
 
     void deleteTaskList(int taskListId);
 
-    TaskList saveNewTaskList(TaskList taskList);
+    Integer saveNewTaskList(TaskList taskList);
 
     TaskList getTaskListById(int taskListId);
 

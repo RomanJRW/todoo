@@ -39,10 +39,8 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
-    public TaskList saveNewTaskList(TaskList taskList) {
-        TaskList savedTaskList = taskListRepository.saveNewTaskList(taskList);
-        taskListRepository.addTaskListForUser(currentUser.getId(), savedTaskList.getId(), true);
-        return savedTaskList;
+    public Integer saveNewTaskList(TaskList taskList) {
+        return taskListRepository.saveNewTaskList(taskList);
     }
 
     @Override
