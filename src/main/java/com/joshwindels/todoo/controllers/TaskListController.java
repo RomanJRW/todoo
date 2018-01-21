@@ -6,6 +6,7 @@ import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.CsvConverterService;
 import com.joshwindels.todoo.services.TaskListService;
 import com.joshwindels.todoo.services.UserService;
+import com.joshwindels.todoo.services.UserTaskListSharingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class TaskListController {
     @Autowired
     private CsvConverterService csvConverterService;
     @Autowired
-    private UserService userService;
+    private UserTaskListSharingService userTaskListSharingService;
     @Autowired
     private TaskListConverter taskListConverter;
 
@@ -58,25 +59,19 @@ public class TaskListController {
         return "redirect:/todoo/lists";
     }
 
-    @PostMapping("/remove/{taskListId}/user")
-    public String removeTaskListForUser(
+    @PostMapping("/unshare/{taskListId}/user/{userId}")
+    public String unshareTaskListFromUser(
             @PathVariable(value = "taskListId") int taskListId,
-            String username) {
-        Integer userId = userService.getUserIdForUsername(username);
-        if (userId != null) {
-            taskListService.removeTaskListForUser(taskListId, userId);
-        }
+            @PathVariable(value = "userId") int userId) {
+        userTaskListSharingService.unshareTaskListFromUser(taskListId, userId);
         return "redirect:/todoo/lists";
     }
 
-    @PostMapping("/add/{taskListId}/user")
-    public String addTaskListForUser(
+    @PostMapping("/share/{taskListId}/user/{userId}")
+    public String shareTaskListWithUser(
             @PathVariable(value = "taskListId") int taskListId,
-            String username) {
-        Integer userId = userService.getUserIdForUsername(username);
-        if (userId != null) {
-            taskListService.addTaskListForUser(taskListId, userId);
-        }
+            @PathVariable(value = "userId") int userId) {
+        userTaskListSharingService.shareTaskListWithUser(taskListId, userId);
         return "redirect:/todoo/lists";
     }
 
