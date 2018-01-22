@@ -27,8 +27,6 @@ public class TaskListRepositoryImpl implements TaskListRepository {
 
     @Autowired
     NamedParameterJdbcTemplate npjt;
-    @Autowired
-    TaskListRowMapper taskListRowMapper;
 
     @Override
     public List<TaskList> getTaskListsForUser(int userId) {
