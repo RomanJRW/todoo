@@ -35,14 +35,14 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 + "  LEFT JOIN task_list_task_map ON task_lists.id = task_list_task_map.task_list_id "
                 + "  LEFT JOIN tasks ON task_list_task_map.task_id = tasks.id "
                 + "  LEFT JOIN user_task_list_map ON task_lists.id = user_task_list_map.task_list_id "
-                + "WHERE user_task_list_map.user_id = :userId";
+                + "WHERE user_task_list_map.user_id = :userId ";
 
         Map<String, Integer> params = new HashMap<>();
         params.put("userId", userId);
 
         List<TaskList> userTaskLists = new ArrayList<>();
         try {
-            userTaskLists = npjt.query(sql, new ResultSetExtractor<List<TaskList>>() {
+            userTaskLists = npjt.query(sql, params, new ResultSetExtractor<List<TaskList>>() {
 
                 @Override public List<TaskList> extractData(ResultSet resultSet)
                         throws SQLException, DataAccessException {
@@ -66,6 +66,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                             taskList.setId(resultSet.getInt("id"));
                             taskList.setName(resultSet.getString("name"));
                             taskList.setOwnerIds(Collections.singleton(resultSet.getInt("owner_id")));
+                            taskLists.add(taskList);
                         }
                         taskList.addTask(task);
                     }
@@ -74,6 +75,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 }
             });
         } catch (DataAccessException e) {
+            e.printStackTrace();
             // Might need to log something here, but would occur when user has no lists
         }
         return userTaskLists;
