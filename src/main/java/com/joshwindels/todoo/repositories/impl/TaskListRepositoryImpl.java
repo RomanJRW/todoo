@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
@@ -15,7 +17,6 @@ import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -46,8 +47,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
         try {
             userTaskLists = npjt.query(sql, new ResultSetExtractor<List<TaskList>>() {
 
-                @Override
-                public List<TaskList> extractData(ResultSet resultSet)
+                @Override public List<TaskList> extractData(ResultSet resultSet)
                         throws SQLException, DataAccessException {
                     List<TaskList> taskLists = new ArrayList<>();
                     while(resultSet.next()) {
@@ -84,16 +84,51 @@ public class TaskListRepositoryImpl implements TaskListRepository {
 
     @Override
     public TaskList getTaskListById(int taskListId) {
-        String sql = "SELECT * "
-                + "   FROM task_lists "
-                + "   WHERE id = :taskListId ";
+        String sql = " SELECT task_lists.id AS id, task_lists.name AS name, tasks.id AS task_id, tasks.description AS task_description, tasks.completed AS task_completed, "
+                + "  user_task_list_map.user_id AS owner_id, user_task_list_map.is_owner "
+                + "FROM task_lists "
+                + "  LEFT JOIN task_list_task_map ON task_lists.id = task_list_task_map.task_list_id "
+                + "  LEFT JOIN tasks ON task_list_task_map.task_id = tasks.id "
+                + "  LEFT JOIN user_task_list_map ON task_lists.id = user_task_list_map.task_list_id "
+                + "WHERE user_task_list_map.task_list_id = :taskListId";
+
         Map<String, Integer> params = new HashMap<>();
         params.put("taskListId", taskListId);
+
+        TaskList taskList = new TaskList();
         try {
-            return npjt.queryForObject(sql, params, taskListRowMapper);
-        } catch (EmptyResultDataAccessException e) {
-            return new TaskList();
+            taskList = npjt.query(sql, new ResultSetExtractor<TaskList>() {
+
+                @Override public TaskList extractData(ResultSet resultSet)
+                        throws SQLException, DataAccessException {
+                    TaskList extractedTaskList = new TaskList();
+
+                    Set<Integer> ownerIds = new HashSet<>();
+                    List<Task> tasks = new ArrayList<>();
+                    while(resultSet.next()) {
+                        if (extractedTaskList.getId() == 0) {
+                            extractedTaskList.setId(resultSet.getInt("id"));
+                        }
+                        if (extractedTaskList.getName() == null) {
+                            extractedTaskList.setName(resultSet.getString("name"));
+                        }
+                        ownerIds.add(resultSet.getInt("owner_id"));
+
+                        Task task = new Task();
+                        task.setId(resultSet.getInt("task_id"));
+                        task.setDescription(resultSet.getString("task_description"));
+                        task.setCompleted(resultSet.getBoolean("task_completed"));
+                        tasks.add(task);
+                    }
+                    extractedTaskList.setOwnerIds(ownerIds);
+                    extractedTaskList.setTasks(tasks);
+                    return extractedTaskList;
+                }
+            });
+        } catch (DataAccessException e) {
+            // Might need to log something here, should always be used with valid id
         }
+        return taskList;
     }
 
     @Override
