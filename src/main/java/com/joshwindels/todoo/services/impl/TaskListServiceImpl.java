@@ -36,8 +36,7 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Override
     public TaskList getTaskListById(int taskListId) {
-        TaskList taskList = taskListRepository.getTaskListById(taskListId);
-        return taskList;
+        return taskListRepository.getTaskListById(taskListId);
     }
 
     @Override

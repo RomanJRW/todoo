@@ -14,7 +14,6 @@ import java.util.Set;
 import com.joshwindels.todoo.dos.Task;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.repositories.TaskListRepository;
-import com.joshwindels.todoo.repositories.rowmappers.TaskListRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;

@@ -1,7 +1,6 @@
 package com.joshwindels.todoo.controllers;
 
 import java.util.Arrays;
-import java.util.List;
 
 import com.joshwindels.todoo.converters.UserConverter;
 import com.joshwindels.todoo.dos.CurrentUser;
