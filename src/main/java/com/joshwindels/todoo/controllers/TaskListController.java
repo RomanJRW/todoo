@@ -1,6 +1,9 @@
 package com.joshwindels.todoo.controllers;
 
+import java.util.Collections;
+
 import com.joshwindels.todoo.converters.TaskListConverter;
+import com.joshwindels.todoo.dos.CurrentUser;
 import com.joshwindels.todoo.dos.TaskList;
 import com.joshwindels.todoo.dtos.TaskListDTO;
 import com.joshwindels.todoo.services.CsvConverterService;
@@ -27,9 +30,12 @@ public class TaskListController {
     private UserTaskListSharingService userTaskListSharingService;
     @Autowired
     private TaskListConverter taskListConverter;
+    @Autowired
+    private CurrentUser currentUser;
 
     @PostMapping("/add")
     public String addNewTaskList(TaskListDTO taskListDTO) {
+        taskListDTO.setOwnerIds(Collections.singleton(currentUser.getId()));
         TaskList taskList = taskListConverter.convertToTaskList(taskListDTO);
         taskListService.saveNewTaskList(taskList);
         return "redirect:/todoo/lists";

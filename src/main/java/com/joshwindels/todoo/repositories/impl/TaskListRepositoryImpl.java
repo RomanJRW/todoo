@@ -134,7 +134,7 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 " INSERT INTO task_lists "
                 + "    ( name ) "
                 + "    VALUES ( :name ) "
-                + "    RETURNING id AS tl_id ) ";
+                + "    RETURNING id AS tl_id ";
         Map<String, Object> params = new HashMap<>();
         params.put("name", taskList.getName());
         Integer taskListId = npjt.queryForObject(tlSql, params, Integer.class);
@@ -142,13 +142,14 @@ public class TaskListRepositoryImpl implements TaskListRepository {
         List<Integer> ownerIds = new ArrayList<>(taskList.getOwnerIds());
         String umSql =
                 " INSERT INTO user_task_list_map "
-                + "    ( user_id, task_list_id ) "
-                + "    VALUES ( :userId , :taskListId )";
+                + "    ( user_id, task_list_id, is_owner ) "
+                + "    VALUES ( :userId , :taskListId, :isOwner )";
         List<Map<String, Object>> batchValues = new ArrayList<>(ownerIds.size());
         for (Integer ownerId : ownerIds) {
             batchValues.add(
                     new MapSqlParameterSource("userId", ownerId)
                             .addValue("taskListId", taskListId)
+                            .addValue("isOwner", true)
                             .getValues());
         }
         npjt.batchUpdate(umSql, batchValues.toArray(new Map[ownerIds.size()]));
