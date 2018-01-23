@@ -35,7 +35,8 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                 + "  LEFT JOIN task_list_task_map ON task_lists.id = task_list_task_map.task_list_id "
                 + "  LEFT JOIN tasks ON task_list_task_map.task_id = tasks.id "
                 + "  LEFT JOIN user_task_list_map ON task_lists.id = user_task_list_map.task_list_id "
-                + "WHERE user_task_list_map.user_id = :userId ";
+                + "WHERE user_task_list_map.user_id = :userId "
+                + " ORDER BY tasks.id ";
 
         Map<String, Integer> params = new HashMap<>();
         params.put("userId", userId);
@@ -48,11 +49,14 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                         throws SQLException, DataAccessException {
                     List<TaskList> taskLists = new ArrayList<>();
                     while(resultSet.next()) {
-                        Task task = new Task();
-                        task.setId(resultSet.getInt("task_id"));
-                        task.setDescription(resultSet.getString("task_description"));
-                        task.setCompleted(resultSet.getBoolean("task_completed"));
-
+                        Task task = null;
+                        int taskId = resultSet.getInt("task_id");
+                        if (taskId != 0) {
+                            task = new Task();
+                            task.setId(taskId);
+                            task.setDescription(resultSet.getString("task_description"));
+                            task.setCompleted(resultSet.getBoolean("task_completed"));
+                        }
                         TaskList taskList;
                         int taskListId = resultSet.getInt("id");
                         Optional<TaskList> otl = taskLists.stream()
@@ -60,15 +64,17 @@ public class TaskListRepositoryImpl implements TaskListRepository {
                                 .findFirst();
                         if (otl.isPresent()) {
                             taskList = otl.get();
-                            taskList.getOwnerIds().add(resultSet.getInt("owner_id"));
+                            taskList.addOwnerId(resultSet.getInt("owner_id"));
                         } else {
                             taskList = new TaskList();
                             taskList.setId(resultSet.getInt("id"));
                             taskList.setName(resultSet.getString("name"));
-                            taskList.setOwnerIds(Collections.singleton(resultSet.getInt("owner_id")));
+                            taskList.setOwnerIds(new HashSet<>(resultSet.getInt("owner_id")));
                             taskLists.add(taskList);
                         }
-                        taskList.addTask(task);
+                        if (task != null) {
+                            taskList.addTask(task);
+                        }
                     }
 
                     return taskLists;

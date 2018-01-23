@@ -58,4 +58,8 @@ public class TaskList implements Serializable {
     public void setOwnerIds(Set<Integer> ownerIds) {
         this.ownerIds = ownerIds;
     }
+
+    public void addOwnerId(Integer ownerId) {
+        ownerIds.add(ownerId);
+    }
 }
