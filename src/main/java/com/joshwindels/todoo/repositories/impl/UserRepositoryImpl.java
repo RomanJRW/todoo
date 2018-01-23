@@ -1,10 +1,12 @@
 package com.joshwindels.todoo.repositories.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.joshwindels.todoo.dos.User;
 import com.joshwindels.todoo.repositories.UserRepository;
+import com.joshwindels.todoo.repositories.rowmappers.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,6 +17,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Autowired
     NamedParameterJdbcTemplate npjt;
+    @Autowired
+    UserRowMapper userRowMapper;
 
     @Override
     public Integer getUserIdForUserName(String username) {
@@ -48,6 +52,14 @@ public class UserRepositoryImpl implements UserRepository {
             System.out.println("Couldn't find any users with username: " + username);
             return null;
         }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        String sql = "SELECT user_id, first_name, last_name, user_credentials.username "
+                + "   FROM user_details "
+                + "   LEFT JOIN user_credentials ON user_id = user_credentials.id ";
+        return npjt.query(sql, userRowMapper);
     }
 
     @Override

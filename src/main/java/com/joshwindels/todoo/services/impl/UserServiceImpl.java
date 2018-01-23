@@ -1,5 +1,6 @@
 package com.joshwindels.todoo.services.impl;
 
+import java.util.List;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
@@ -48,6 +49,11 @@ public class UserServiceImpl implements UserService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
     }
 
     private boolean credentialsAreValid(String username, String password) {
