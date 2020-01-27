@@ -2,10 +2,12 @@ package com.joshwindels.todoo.services.impl;
 
 import com.joshwindels.todoo.repositories.TaskListRepository;
 import com.joshwindels.todoo.services.UserTaskListSharingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class UserTaskListSharingServiceImpl implements UserTaskListSharingService {
 
     @Autowired
@@ -18,6 +20,7 @@ public class UserTaskListSharingServiceImpl implements UserTaskListSharingServic
 
     @Override
     public void unshareTaskListFromUser(int taskListId, int userId) {
+        log.info(String.format("Unsharing task list %s with user %s", taskListId, userId));
         taskListRepository.removeTaskListForUser(taskListId, userId);
     }
 
